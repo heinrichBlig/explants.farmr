@@ -1,0 +1,6 @@
+{
+  "name": "tissue.farmr",
+  "description": "Plant tissue culture management platform for hobbyists to commercial labs, powered by Plant Cell Technology.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
