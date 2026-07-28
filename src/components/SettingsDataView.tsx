@@ -28,12 +28,10 @@ import { PRICING_TIERS } from '../data/mockData';
 
 interface SettingsDataViewProps {
   onRefreshData: () => void;
-  onOpenCoolifyModal: () => void;
 }
 
 export const SettingsDataView: React.FC<SettingsDataViewProps> = ({
-  onRefreshData,
-  onOpenCoolifyModal
+  onRefreshData
 }) => {
   const [importJsonText, setImportJsonText] = useState('');
   const [importStatus, setImportStatus] = useState<string | null>(null);
@@ -80,20 +78,12 @@ export const SettingsDataView: React.FC<SettingsDataViewProps> = ({
         <div>
           <h2 className="text-lg font-extrabold text-white tracking-tight flex items-center gap-2">
             <Settings className="w-5 h-5 text-[#9d4edd]" />
-            Data Backup, Coolify Deployment & PCT Partner Settings
+            Data Backup & PCT Partner Settings
           </h2>
           <p className="text-xs text-slate-400">
-            Export client-side backups as CSV/JSON, configure static site deployment for Coolify, and review PCT affiliate revenue.
+            Export client-side backups as CSV/JSON and review PCT affiliate revenue.
           </p>
         </div>
-
-        <button
-          onClick={onOpenCoolifyModal}
-          className="bg-[#161625] hover:bg-[#202038] border border-[#2e2e46] text-white text-xs font-bold px-4 py-2.5 rounded-xl transition-all flex items-center gap-1.5 shrink-0"
-        >
-          <Terminal className="w-4 h-4 text-[#9d4edd]" />
-          <span>Coolify Deployment Guide</span>
-        </button>
       </div>
 
       {/* PCT Affiliate Revenue Dashboard Simulator */}

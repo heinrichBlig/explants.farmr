@@ -22,7 +22,6 @@ interface HeaderProps {
   lowStockItems: InventoryItem[];
   isDarkMode?: boolean;
   onOpenQuickCulture: () => void;
-  onOpenCoolifyModal: () => void;
   onNavigateToTab: (tab: string) => void;
 }
 
@@ -35,7 +34,6 @@ export const Header: React.FC<HeaderProps> = ({
   lowStockItems,
   isDarkMode = false,
   onOpenQuickCulture,
-  onOpenCoolifyModal,
   onNavigateToTab
 }) => {
   const [showNotifications, setShowNotifications] = useState(false);

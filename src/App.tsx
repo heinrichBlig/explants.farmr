@@ -11,7 +11,6 @@ import { ContaminationLogView } from './components/ContaminationLogView';
 import { KnowledgeBaseView } from './components/KnowledgeBaseView';
 import { MultiLabView } from './components/MultiLabView';
 import { SettingsDataView } from './components/SettingsDataView';
-import { CoolifyDeploymentModal } from './components/CoolifyDeploymentModal';
 import { NewCultureModal } from './components/NewCultureModal';
 
 import { 
@@ -39,7 +38,6 @@ export default function App() {
   const [contaminationLogs, setContaminationLogs] = useState(getContaminationLogs(activeLabIdState));
 
   // Modal triggers
-  const [showCoolifyModal, setShowCoolifyModal] = useState<boolean>(false);
   const [showNewCultureModal, setShowNewCultureModal] = useState<boolean>(false);
 
   // Initialize storage on first load & handle scanned QR link
@@ -129,7 +127,6 @@ export default function App() {
           lowStockItems={lowStockItems}
           isDarkMode={isDarkMode}
           onOpenQuickCulture={() => setShowNewCultureModal(true)}
-          onOpenCoolifyModal={() => setShowCoolifyModal(true)}
           onNavigateToTab={(tab) => setCurrentTab(tab)}
         />
 
@@ -215,18 +212,12 @@ export default function App() {
           {currentTab === 'settings' && (
             <SettingsDataView
               onRefreshData={refreshAllData}
-              onOpenCoolifyModal={() => setShowCoolifyModal(true)}
             />
           )}
         </main>
       </div>
 
       {/* Global Modals */}
-      <CoolifyDeploymentModal
-        isOpen={showCoolifyModal}
-        onClose={() => setShowCoolifyModal(false)}
-      />
-
       <NewCultureModal
         isOpen={showNewCultureModal}
         onClose={() => setShowNewCultureModal(false)}
