@@ -14,7 +14,11 @@ import { KnowledgeArticle } from '../types';
 import { INITIAL_KNOWLEDGE_BASE } from '../data/mockData';
 import { recordPctAffiliateClick } from '../services/storage';
 
-export const KnowledgeBaseView: React.FC = () => {
+interface KnowledgeBaseViewProps {
+  isDarkMode?: boolean;
+}
+
+export const KnowledgeBaseView: React.FC<KnowledgeBaseViewProps> = ({ isDarkMode = false }) => {
   const [skillFilter, setSkillFilter] = useState<string>('All');
   const [search, setSearch] = useState('');
   const [selectedArticle, setSelectedArticle] = useState<KnowledgeArticle | null>(INITIAL_KNOWLEDGE_BASE[0]);
@@ -64,13 +68,15 @@ export const KnowledgeBaseView: React.FC = () => {
   return (
     <div className="space-y-6 pb-12">
       {/* Header */}
-      <div className="bg-[#11111a] border border-[#222232] p-5 rounded-2xl flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className={`p-5 rounded-2xl flex flex-col md:flex-row md:items-center justify-between gap-4 border ${
+        isDarkMode ? 'bg-[#11111a] border-[#222232]' : 'bg-white border-slate-200 shadow-xs'
+      }`}>
         <div>
-          <h2 className="text-lg font-extrabold text-white tracking-tight flex items-center gap-2">
+          <h2 className={`text-lg font-extrabold tracking-tight flex items-center gap-2 ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>
             <GraduationCap className="w-5 h-5 text-[#9d4edd]" />
             Plant Cell Technology Knowledge Hub & Masterclasses
           </h2>
-          <p className="text-xs text-slate-400">
+          <p className={`text-xs ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}`}>
             Educational protocols, video masterclasses, sterilization guides, and diagnostic troubleshooting powered by PCT.
           </p>
         </div>
@@ -86,15 +92,19 @@ export const KnowledgeBaseView: React.FC = () => {
       </div>
 
       {/* Interactive Tissue Culture Diagnostic Assistant */}
-      <div className="bg-gradient-to-r from-[#181226] via-[#201436] to-[#120e22] border border-[#7b2cbf]/40 p-5 rounded-2xl space-y-4">
+      <div className={`p-5 rounded-2xl space-y-4 border ${
+        isDarkMode 
+          ? 'bg-gradient-to-r from-[#181226] via-[#201436] to-[#120e22] border-[#7b2cbf]/40' 
+          : 'bg-purple-50/70 border-purple-200'
+      }`}>
         <div className="flex items-center gap-2">
-          <HelpCircle className="w-5 h-5 text-[#c77dff]" />
-          <h3 className="text-sm font-bold text-white">Interactive Tissue Culture Diagnostic Assistant</h3>
+          <HelpCircle className={`w-5 h-5 ${isDarkMode ? 'text-[#c77dff]' : 'text-[#7b2cbf]'}`} />
+          <h3 className={`text-sm font-bold ${isDarkMode ? 'text-white' : 'text-purple-950'}`}>Interactive Tissue Culture Diagnostic Assistant</h3>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div>
-            <label className="text-xs text-slate-300 mb-1.5 block">Select Culture Symptom:</label>
+            <label className={`text-xs mb-1.5 block ${isDarkMode ? 'text-slate-300' : 'text-slate-700 font-medium'}`}>Select Culture Symptom:</label>
             <div className="space-y-1.5">
               {[
                 { id: 'browning', label: 'Black / Brown Exudate in Media' },
@@ -105,10 +115,12 @@ export const KnowledgeBaseView: React.FC = () => {
                 <button
                   key={item.id}
                   onClick={() => setSymptom(item.id)}
-                  className={`w-full text-left px-3 py-2 rounded-xl text-xs font-medium transition-all ${
+                  className={`w-full text-left px-3 py-2 rounded-xl text-xs font-medium transition-all border ${
                     symptom === item.id
-                      ? 'bg-[#7b2cbf] text-white shadow-md shadow-[#7b2cbf]/20'
-                      : 'bg-[#181828] text-slate-400 hover:text-white border border-[#2e2e42]'
+                      ? 'bg-[#7b2cbf] text-white shadow-md shadow-[#7b2cbf]/20 border-transparent'
+                      : isDarkMode 
+                        ? 'bg-[#181828] text-slate-400 hover:text-white border-[#2e2e42]' 
+                        : 'bg-white text-slate-700 hover:text-slate-900 border-purple-200/80'
                   }`}
                 >
                   {item.label}
@@ -117,31 +129,37 @@ export const KnowledgeBaseView: React.FC = () => {
             </div>
           </div>
 
-          <div className="md:col-span-2 bg-[#12121e] border border-[#2e2e46] p-4 rounded-xl space-y-3">
-            <div className="flex items-center justify-between pb-2 border-b border-[#252538]">
-              <span className="text-xs font-bold text-[#c77dff] uppercase font-mono tracking-wider">
+          <div className={`p-4 rounded-xl space-y-3 border ${
+            isDarkMode ? 'bg-[#12121e] border-[#2e2e46]' : 'bg-white border-purple-200 shadow-xs'
+          }`}>
+            <div className={`flex items-center justify-between pb-2 border-b ${
+              isDarkMode ? 'border-[#252538]' : 'border-purple-100'
+            }`}>
+              <span className={`text-xs font-bold uppercase font-mono tracking-wider ${isDarkMode ? 'text-[#c77dff]' : 'text-[#7b2cbf]'}`}>
                 Diagnosis & Solution
               </span>
-              <span className="text-[10px] bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 px-2 py-0.5 rounded font-mono">
+              <span className="text-[10px] bg-emerald-500/10 text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-300 border border-emerald-500/30 px-2 py-0.5 rounded font-mono">
                 PCT Verified Protocol
               </span>
             </div>
 
             <div className="space-y-2 text-xs">
               <div>
-                <span className="text-slate-400 font-semibold block text-[11px]">Primary Cause:</span>
-                <span className="text-slate-200">{currentDiagnostic.cause}</span>
+                <span className={`font-semibold block text-[11px] ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>Primary Cause:</span>
+                <span className={isDarkMode ? 'text-slate-200' : 'text-slate-800'}>{currentDiagnostic.cause}</span>
               </div>
 
               <div>
-                <span className="text-slate-400 font-semibold block text-[11px]">Recommended Protocol Action:</span>
-                <span className="text-emerald-300 font-medium">{currentDiagnostic.solution}</span>
+                <span className={`font-semibold block text-[11px] ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>Recommended Protocol Action:</span>
+                <span className={`font-medium ${isDarkMode ? 'text-emerald-300' : 'text-emerald-700'}`}>{currentDiagnostic.solution}</span>
               </div>
             </div>
 
-            <div className="pt-2 flex items-center justify-between border-t border-[#252538]">
-              <span className="text-xs font-medium text-slate-300">
-                Recommended Fix: <strong className="text-white">{currentDiagnostic.pctProduct}</strong>
+            <div className={`pt-2 flex items-center justify-between border-t ${
+              isDarkMode ? 'border-[#252538]' : 'border-purple-100'
+            }`}>
+              <span className={`text-xs font-medium ${isDarkMode ? 'text-slate-300' : 'text-slate-700'}`}>
+                Recommended Fix: <strong className={isDarkMode ? 'text-white' : 'text-slate-900'}>{currentDiagnostic.pctProduct}</strong>
               </span>
               <button
                 onClick={() => recordPctAffiliateClick(currentDiagnostic.pctProduct, currentDiagnostic.pctUrl)}
@@ -159,15 +177,21 @@ export const KnowledgeBaseView: React.FC = () => {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Left Col: Article List */}
         <div className="space-y-3">
-          <div className="flex items-center justify-between bg-[#11111a] border border-[#222232] p-3 rounded-xl">
-            <span className="text-xs font-bold text-white">PCT Articles ({filteredArticles.length})</span>
+          <div className={`flex items-center justify-between p-3 rounded-xl border ${
+            isDarkMode ? 'bg-[#11111a] border-[#222232]' : 'bg-white border-slate-200 shadow-xs'
+          }`}>
+            <span className={`text-xs font-bold ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>PCT Articles ({filteredArticles.length})</span>
             <div className="relative w-40">
               <input
                 type="text"
                 placeholder="Filter..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="w-full bg-[#181826] border border-[#28283e] text-xs text-white rounded-lg px-2.5 py-1 outline-none"
+                className={`w-full text-xs rounded-lg px-2.5 py-1 outline-none border ${
+                  isDarkMode 
+                    ? 'bg-[#181826] border-[#28283e] text-white' 
+                    : 'bg-slate-50 border-slate-300 text-slate-900 focus:bg-white'
+                }`}
               />
             </div>
           </div>
@@ -181,16 +205,16 @@ export const KnowledgeBaseView: React.FC = () => {
                   onClick={() => setSelectedArticle(art)}
                   className={`p-3.5 rounded-2xl border cursor-pointer transition-all ${
                     isSelected
-                      ? 'bg-[#1d1430] border-[#7b2cbf] shadow-md'
-                      : 'bg-[#11111a] border-[#222232] hover:border-[#7b2cbf]/40'
+                      ? isDarkMode ? 'bg-[#1d1430] border-[#7b2cbf] shadow-md' : 'bg-purple-50 border-purple-400 shadow-xs'
+                      : isDarkMode ? 'bg-[#11111a] border-[#222232] hover:border-[#7b2cbf]/40' : 'bg-white border-slate-200 hover:border-purple-300 shadow-xs'
                   }`}
                 >
                   <div className="flex items-center justify-between text-[10px] font-mono mb-1">
-                    <span className="text-[#c77dff] font-bold">{art.category}</span>
-                    <span className="text-slate-400">{art.readTimeMinutes} min read</span>
+                    <span className={`font-bold ${isDarkMode ? 'text-[#c77dff]' : 'text-[#7b2cbf]'}`}>{art.category}</span>
+                    <span className={isDarkMode ? 'text-slate-400' : 'text-slate-500'}>{art.readTimeMinutes} min read</span>
                   </div>
-                  <h4 className="font-bold text-white text-xs leading-snug">{art.title}</h4>
-                  <p className="text-[11px] text-slate-400 line-clamp-2 mt-1">{art.summary}</p>
+                  <h4 className={`font-bold text-xs leading-snug ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>{art.title}</h4>
+                  <p className={`text-[11px] line-clamp-2 mt-1 ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}`}>{art.summary}</p>
                 </div>
               );
             })}
@@ -198,23 +222,29 @@ export const KnowledgeBaseView: React.FC = () => {
         </div>
 
         {/* Right 2 Cols: Selected Article Details */}
-        <div className="lg:col-span-2 bg-[#11111a] border border-[#222232] p-6 rounded-2xl space-y-5">
+        <div className={`lg:col-span-2 p-6 rounded-2xl space-y-5 border ${
+          isDarkMode ? 'bg-[#11111a] border-[#222232]' : 'bg-white border-slate-200 shadow-xs'
+        }`}>
           {selectedArticle ? (
             <div className="space-y-4">
-              <div className="flex items-center justify-between pb-3 border-b border-[#222232]">
+              <div className={`flex items-center justify-between pb-3 border-b ${
+                isDarkMode ? 'border-[#222232]' : 'border-slate-200'
+              }`}>
                 <div>
                   <div className="flex items-center gap-2 mb-1">
-                    <span className="bg-[#7b2cbf]/30 text-[#c77dff] border border-[#7b2cbf]/40 text-[10px] font-mono font-bold px-2 py-0.5 rounded">
+                    <span className="bg-[#7b2cbf]/10 text-[#7b2cbf] dark:bg-[#7b2cbf]/30 dark:text-[#c77dff] border border-[#7b2cbf]/40 text-[10px] font-mono font-bold px-2 py-0.5 rounded">
                       {selectedArticle.category}
                     </span>
-                    <span className="text-xs text-slate-400 font-mono">By {selectedArticle.author}</span>
+                    <span className={`text-xs font-mono ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>By {selectedArticle.author}</span>
                   </div>
-                  <h2 className="text-lg font-bold text-white">{selectedArticle.title}</h2>
+                  <h2 className={`text-lg font-bold ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>{selectedArticle.title}</h2>
                 </div>
 
                 <button
                   onClick={() => recordPctAffiliateClick(selectedArticle.title, selectedArticle.pctArticleUrl)}
-                  className="bg-[#181826] hover:bg-[#222238] border border-[#2e2e42] text-slate-200 text-xs font-medium px-3 py-1.5 rounded-xl flex items-center gap-1 shrink-0"
+                  className={`text-xs font-medium px-3 py-1.5 rounded-xl flex items-center gap-1 shrink-0 border ${
+                    isDarkMode ? 'bg-[#181826] hover:bg-[#222238] border-[#2e2e42] text-slate-200' : 'bg-slate-100 hover:bg-slate-200 border-slate-300 text-slate-700'
+                  }`}
                 >
                   <span>PCT Source</span>
                   <ExternalLink className="w-3.5 h-3.5" />
@@ -222,13 +252,19 @@ export const KnowledgeBaseView: React.FC = () => {
               </div>
 
               {/* Content Body */}
-              <div className="prose prose-invert prose-sm max-w-none text-slate-300 text-xs leading-relaxed space-y-3 whitespace-pre-line">
+              <div className={`prose prose-sm max-w-none text-xs leading-relaxed space-y-3 whitespace-pre-line ${
+                isDarkMode ? 'prose-invert text-slate-300' : 'text-slate-700'
+              }`}>
                 {selectedArticle.content}
               </div>
 
               {/* Tagged Reagents */}
-              <div className="bg-[#161624] p-4 rounded-xl border border-[#222234] space-y-2 pt-3">
-                <span className="text-xs font-bold text-[#c77dff] uppercase font-mono tracking-wider block">
+              <div className={`p-4 rounded-xl border space-y-2 pt-3 ${
+                isDarkMode ? 'bg-[#161624] border-[#222234]' : 'bg-slate-50 border-slate-200'
+              }`}>
+                <span className={`text-xs font-bold uppercase font-mono tracking-wider block ${
+                  isDarkMode ? 'text-[#c77dff]' : 'text-[#7b2cbf]'
+                }`}>
                   Reagents Used in This Protocol:
                 </span>
                 <div className="flex flex-wrap gap-2">
@@ -236,18 +272,22 @@ export const KnowledgeBaseView: React.FC = () => {
                     <button
                       key={tag}
                       onClick={() => recordPctAffiliateClick(tag)}
-                      className="bg-[#1e1e32] hover:bg-[#2a2a46] border border-[#363654] text-slate-200 text-xs px-3 py-1 rounded-lg flex items-center gap-1 font-medium transition-colors"
+                      className={`text-xs px-3 py-1 rounded-lg flex items-center gap-1 font-medium transition-colors border ${
+                        isDarkMode 
+                          ? 'bg-[#1e1e32] hover:bg-[#2a2a46] border-[#363654] text-slate-200' 
+                          : 'bg-white hover:bg-slate-100 border-slate-300 text-slate-800'
+                      }`}
                     >
-                      <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+                      <ShieldCheck className="w-3.5 h-3.5 text-emerald-500" />
                       <span>{tag}</span>
-                      <ExternalLink className="w-3 h-3 text-slate-400 ml-1" />
+                      <ExternalLink className={`w-3 h-3 ml-1 ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`} />
                     </button>
                   ))}
                 </div>
               </div>
             </div>
           ) : (
-            <div className="py-12 text-center text-xs text-slate-400">Select an article from the left list.</div>
+            <div className={`py-12 text-center text-xs ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>Select an article from the left list.</div>
           )}
         </div>
       </div>

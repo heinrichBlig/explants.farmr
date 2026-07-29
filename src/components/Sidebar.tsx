@@ -16,7 +16,8 @@ import {
   Sparkles,
   Building2,
   ChevronRight,
-  ShieldCheck
+  ShieldCheck,
+  X
 } from 'lucide-react';
 import { Lab } from '../types';
 import { recordPctAffiliateClick } from '../services/storage';
@@ -33,6 +34,8 @@ interface SidebarProps {
   setIsDarkMode: (val: boolean) => void;
   onOpenQuickCulture: () => void;
   onOpenQuickRecipe: () => void;
+  mobileOpen?: boolean;
+  onCloseMobile?: () => void;
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({
@@ -46,9 +49,16 @@ export const Sidebar: React.FC<SidebarProps> = ({
   isDarkMode,
   setIsDarkMode,
   onOpenQuickCulture,
-  onOpenQuickRecipe
+  onOpenQuickRecipe,
+  mobileOpen = false,
+  onCloseMobile
 }) => {
   const activeLab = labs.find(l => l.id === activeLabId) || labs[0];
+
+  const handleNavClick = (tabId: string) => {
+    setCurrentTab(tabId);
+    if (onCloseMobile) onCloseMobile();
+  };
 
   const navItems = [
     { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
@@ -64,22 +74,47 @@ export const Sidebar: React.FC<SidebarProps> = ({
   ];
 
   return (
-    <aside className={`w-64 h-screen ${isDarkMode ? 'bg-[#0d0d14] border-[#222232] text-slate-300' : 'bg-white border-slate-200 text-slate-800'} border-r flex flex-col justify-between select-none sticky top-0 shrink-0 z-30 transition-colors duration-200`}>
-      <div>
-        {/* Logo & Brand Header */}
-        <div className={`p-4 border-b ${isDarkMode ? 'border-[#222232]' : 'border-slate-200'} flex items-center justify-between`}>
-          <div className="flex items-center gap-2.5">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#7b2cbf] to-[#9d4edd] flex items-center justify-center shadow-lg shadow-[#7b2cbf]/30 border border-purple-400/20">
-              <FlaskConical className="w-5 h-5 text-white" />
-            </div>
-            <div>
-              <div className="flex items-center gap-1.5">
-                <span className={`font-bold text-lg tracking-tight font-mono ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>tissue<span className="text-[#9d4edd]">.farmr</span></span>
+    <>
+      {/* Mobile Backdrop Overlay */}
+      {mobileOpen && (
+        <div 
+          onClick={onCloseMobile}
+          className="fixed inset-0 bg-black/60 backdrop-blur-xs z-40 lg:hidden"
+        />
+      )}
+
+      <aside className={`w-64 h-screen ${isDarkMode ? 'bg-[#0d0d14] border-[#222232] text-slate-300' : 'bg-white border-slate-200 text-slate-800'} border-r flex-col justify-between select-none sticky top-0 shrink-0 z-50 transition-colors duration-200 ${
+        mobileOpen ? 'fixed inset-y-0 left-0 flex shadow-2xl' : 'hidden lg:flex'
+      }`}>
+        <div>
+          {/* Logo & Brand Header */}
+          <div className={`p-4 border-b ${isDarkMode ? 'border-[#222232]' : 'border-slate-200'} flex items-center justify-between`}>
+            <div className="flex items-center gap-2.5">
+              <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#7b2cbf] to-[#9d4edd] flex items-center justify-center shadow-lg shadow-[#7b2cbf]/30 border border-purple-400/20">
+                <FlaskConical className="w-5 h-5 text-white" />
               </div>
-              <p className={`text-[10px] font-medium ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>Tissue Culture Management</p>
+              <div>
+                <div className="flex items-center gap-1.5">
+                  <span className={`font-bold text-lg tracking-tight font-mono ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>tissue<span className="text-[#9d4edd]">.farmr</span></span>
+                </div>
+                <p className={`text-[10px] font-medium ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>Tissue Culture Management</p>
+              </div>
             </div>
+
+            {/* Close Button on Mobile */}
+            {onCloseMobile && (
+              <button
+                onClick={onCloseMobile}
+                className={`lg:hidden p-1.5 rounded-lg border transition-colors ${
+                  isDarkMode 
+                    ? 'bg-[#151522] border-[#2a2a3e] text-slate-400 hover:text-white' 
+                    : 'bg-slate-100 border-slate-300 text-slate-500 hover:text-slate-900'
+                }`}
+              >
+                <X className="w-4 h-4" />
+              </button>
+            )}
           </div>
-        </div>
 
         {/* Lab Switcher */}
         <div className="px-3 pt-3 pb-1">
@@ -107,14 +142,14 @@ export const Sidebar: React.FC<SidebarProps> = ({
         {/* Quick Action Button */}
         <div className="px-3 my-2 flex gap-1.5">
           <button
-            onClick={onOpenQuickCulture}
+            onClick={() => { onOpenQuickCulture(); if (onCloseMobile) onCloseMobile(); }}
             className="flex-1 bg-[#7b2cbf] hover:bg-[#9d4edd] text-white text-xs font-semibold py-1.5 px-2.5 rounded-lg transition-all flex items-center justify-center gap-1 shadow-md shadow-[#7b2cbf]/20 active:scale-[0.98]"
           >
             <Plus className="w-3.5 h-3.5" />
             Culture
           </button>
           <button
-            onClick={onOpenQuickRecipe}
+            onClick={() => { onOpenQuickRecipe(); if (onCloseMobile) onCloseMobile(); }}
             className={`flex-1 border text-xs font-medium py-1.5 px-2.5 rounded-lg transition-all flex items-center justify-center gap-1 active:scale-[0.98] ${
               isDarkMode 
                 ? 'bg-[#1a1a28] hover:bg-[#252538] border-[#2e2e44] text-slate-200' 
@@ -134,7 +169,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
             return (
               <button
                 key={item.id}
-                onClick={() => setCurrentTab(item.id)}
+                onClick={() => handleNavClick(item.id)}
                 className={`w-full flex items-center justify-between px-3 py-2 rounded-lg text-xs font-medium transition-all ${
                   isActive
                     ? isDarkMode
@@ -212,5 +247,6 @@ export const Sidebar: React.FC<SidebarProps> = ({
         </div>
       </div>
     </aside>
+  </>
   );
 };

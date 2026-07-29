@@ -8,7 +8,8 @@ import {
   Building2, 
   Sparkles,
   Download,
-  Terminal
+  Terminal,
+  Menu
 } from 'lucide-react';
 import { Lab, Culture, InventoryItem } from '../types';
 import { recordPctAffiliateClick } from '../services/storage';
@@ -23,6 +24,7 @@ interface HeaderProps {
   isDarkMode?: boolean;
   onOpenQuickCulture: () => void;
   onNavigateToTab: (tab: string) => void;
+  onOpenMobileMenu?: () => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -34,37 +36,51 @@ export const Header: React.FC<HeaderProps> = ({
   lowStockItems,
   isDarkMode = false,
   onOpenQuickCulture,
-  onNavigateToTab
+  onNavigateToTab,
+  onOpenMobileMenu
 }) => {
   const [showNotifications, setShowNotifications] = useState(false);
   const totalAlerts = overdueCultures.length + lowStockItems.length;
 
   return (
-    <header className={`h-16 border-b ${isDarkMode ? 'bg-[#0a0a0f]/80 border-[#222232]' : 'bg-white/90 border-slate-200'} backdrop-blur-md px-6 flex items-center justify-between sticky top-0 z-20 transition-colors duration-200`}>
-      {/* Title & Active Lab Pill */}
-      <div className="flex items-center gap-3">
-        <h1 className={`text-lg font-bold tracking-tight ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>{currentTabLabel}</h1>
-        <div className={`hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded-full border text-[11px] font-medium ${
+    <header className={`h-16 border-b ${isDarkMode ? 'bg-[#0a0a0f]/80 border-[#222232]' : 'bg-white/90 border-slate-200'} backdrop-blur-md px-3 sm:px-6 flex items-center justify-between sticky top-0 z-20 transition-colors duration-200`}>
+      {/* Title & Active Lab Pill & Mobile Menu Toggle */}
+      <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+        <button
+          onClick={onOpenMobileMenu}
+          className={`lg:hidden p-2 rounded-lg border transition-colors shrink-0 ${
+            isDarkMode 
+              ? 'bg-[#141420] border-[#2a2a3e] text-slate-200 hover:bg-[#1f1f30]' 
+              : 'bg-slate-100 border-slate-300 text-slate-700 hover:bg-slate-200'
+          }`}
+          title="Open menu"
+          aria-label="Open navigation menu"
+        >
+          <Menu className="w-4 h-4" />
+        </button>
+
+        <h1 className={`text-base sm:text-lg font-bold tracking-tight truncate ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>{currentTabLabel}</h1>
+        <div className={`hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded-full border text-[11px] font-medium shrink-0 ${
           isDarkMode 
             ? 'bg-[#161624] border-[#2e2e42] text-slate-300' 
             : 'bg-slate-100 border-slate-200 text-slate-800'
         }`}>
           <Building2 className="w-3 h-3 text-[#9d4edd]" />
-          <span>{activeLab.name}</span>
+          <span className="truncate max-w-[120px]">{activeLab.name}</span>
         </div>
       </div>
 
       {/* Global Search & Action Buttons */}
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-2 sm:gap-3 shrink-0">
         {/* Search Bar */}
-        <div className="relative w-48 md:w-64">
-          <Search className={`w-3.5 h-3.5 absolute left-3 top-2.5 pointer-events-none ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`} />
+        <div className="relative w-28 sm:w-44 md:w-64">
+          <Search className={`w-3.5 h-3.5 absolute left-2.5 top-2.5 pointer-events-none ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`} />
           <input
             type="text"
-            placeholder="Search species, code, recipe..."
+            placeholder="Search..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className={`w-full text-xs rounded-lg pl-8 pr-3 py-1.5 transition-all outline-none border ${
+            className={`w-full text-xs rounded-lg pl-7 pr-2 sm:pr-3 py-1.5 transition-all outline-none border ${
               isDarkMode 
                 ? 'bg-[#141420] border-[#2a2a3e] focus:border-[#7b2cbf] focus:ring-1 focus:ring-[#7b2cbf] text-slate-200 placeholder-slate-500' 
                 : 'bg-slate-50 border-slate-300 focus:border-purple-600 focus:ring-1 focus:ring-purple-600 focus:bg-white text-slate-900 placeholder-slate-400'

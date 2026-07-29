@@ -37,8 +37,9 @@ export default function App() {
   const [inventory, setInventory] = useState(getInventory(activeLabIdState));
   const [contaminationLogs, setContaminationLogs] = useState(getContaminationLogs(activeLabIdState));
 
-  // Modal triggers
+  // Modal & Mobile Menu triggers
   const [showNewCultureModal, setShowNewCultureModal] = useState<boolean>(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
 
   // Initialize storage on first load & handle scanned QR link
   useEffect(() => {
@@ -80,6 +81,15 @@ export default function App() {
     setContaminationLogs(getContaminationLogs(newId));
   };
 
+  // Sync dark mode class on document element
+  useEffect(() => {
+    if (isDarkMode) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [isDarkMode]);
+
   const activeLab = labs.find(l => l.id === activeLabIdState) || labs[0];
 
   const todayStr = new Date().toISOString().split('T')[0];
@@ -114,6 +124,8 @@ export default function App() {
         setIsDarkMode={setIsDarkMode}
         onOpenQuickCulture={() => setShowNewCultureModal(true)}
         onOpenQuickRecipe={() => setCurrentTab('builder')}
+        mobileOpen={mobileMenuOpen}
+        onCloseMobile={() => setMobileMenuOpen(false)}
       />
 
       {/* Main Content Area */}
@@ -128,15 +140,17 @@ export default function App() {
           isDarkMode={isDarkMode}
           onOpenQuickCulture={() => setShowNewCultureModal(true)}
           onNavigateToTab={(tab) => setCurrentTab(tab)}
+          onOpenMobileMenu={() => setMobileMenuOpen(true)}
         />
 
-        <main className="p-6 max-w-7xl w-full mx-auto flex-1">
+        <main className="p-3 sm:p-6 max-w-7xl w-full mx-auto flex-1">
           {currentTab === 'dashboard' && (
             <DashboardView
               cultures={cultures}
               inventory={inventory}
               contaminationLogs={contaminationLogs}
               recipes={recipes}
+              isDarkMode={isDarkMode}
               onNavigateTab={(tab) => setCurrentTab(tab)}
               onOpenCultureModal={() => setShowNewCultureModal(true)}
               onOpenRecipeModal={() => setCurrentTab('builder')}
@@ -151,6 +165,7 @@ export default function App() {
               activeLabId={activeLabIdState}
               searchTerm={searchTerm}
               setSearchTerm={setSearchTerm}
+              isDarkMode={isDarkMode}
               onRefreshData={refreshAllData}
               onOpenNewCultureModal={() => setShowNewCultureModal(true)}
             />
@@ -159,6 +174,7 @@ export default function App() {
           {currentTab === 'builder' && (
             <MediaRecipeBuilderView
               activeLabId={activeLabIdState}
+              isDarkMode={isDarkMode}
               onRecipeSaved={refreshAllData}
             />
           )}
@@ -167,6 +183,7 @@ export default function App() {
             <RecipeLibraryView
               recipes={recipes}
               activeLabId={activeLabIdState}
+              isDarkMode={isDarkMode}
               onRecipeSaved={refreshAllData}
               onNavigateToBuilder={() => setCurrentTab('builder')}
             />
@@ -176,6 +193,7 @@ export default function App() {
             <SubcultureScheduleView
               cultures={cultures}
               recipes={recipes}
+              isDarkMode={isDarkMode}
               onRefreshData={refreshAllData}
             />
           )}
@@ -184,6 +202,7 @@ export default function App() {
             <InventoryManagerView
               inventory={inventory}
               activeLabId={activeLabIdState}
+              isDarkMode={isDarkMode}
               onRefreshData={refreshAllData}
             />
           )}
@@ -193,24 +212,27 @@ export default function App() {
               contaminationLogs={contaminationLogs}
               cultures={cultures}
               activeLabId={activeLabIdState}
+              isDarkMode={isDarkMode}
               onRefreshData={refreshAllData}
             />
           )}
 
           {currentTab === 'knowledge' && (
-            <KnowledgeBaseView />
+            <KnowledgeBaseView isDarkMode={isDarkMode} />
           )}
 
           {currentTab === 'multilab' && (
             <MultiLabView
               labs={labs}
               activeLabId={activeLabIdState}
+              isDarkMode={isDarkMode}
               onRefreshData={refreshAllData}
             />
           )}
 
           {currentTab === 'settings' && (
             <SettingsDataView
+              isDarkMode={isDarkMode}
               onRefreshData={refreshAllData}
             />
           )}
@@ -223,6 +245,7 @@ export default function App() {
         onClose={() => setShowNewCultureModal(false)}
         recipes={recipes}
         activeLabId={activeLabIdState}
+        isDarkMode={isDarkMode}
         onCultureCreated={refreshAllData}
       />
     </div>

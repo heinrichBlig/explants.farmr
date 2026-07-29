@@ -17,12 +17,14 @@ import { performSubcultureAction } from '../services/storage';
 interface SubcultureScheduleViewProps {
   cultures: Culture[];
   recipes: MediaRecipe[];
+  isDarkMode?: boolean;
   onRefreshData: () => void;
 }
 
 export const SubcultureScheduleView: React.FC<SubcultureScheduleViewProps> = ({
   cultures,
   recipes,
+  isDarkMode = false,
   onRefreshData
 }) => {
   const [filter, setFilter] = useState<'all' | 'overdue' | 'today' | 'next7' | 'next30'>('all');
@@ -86,13 +88,15 @@ export const SubcultureScheduleView: React.FC<SubcultureScheduleViewProps> = ({
   return (
     <div className="space-y-6 pb-12">
       {/* Header */}
-      <div className="bg-[#11111a] border border-[#222232] p-5 rounded-2xl flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className={`p-5 rounded-2xl flex flex-col md:flex-row md:items-center justify-between gap-4 border ${
+        isDarkMode ? 'bg-[#11111a] border-[#222232]' : 'bg-white border-slate-200 shadow-xs'
+      }`}>
         <div>
-          <h2 className="text-lg font-extrabold text-white tracking-tight flex items-center gap-2">
+          <h2 className={`text-lg font-extrabold tracking-tight flex items-center gap-2 ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>
             <Calendar className="w-5 h-5 text-[#9d4edd]" />
             Subculture Cycle Schedule & Timeline
           </h2>
-          <p className="text-xs text-slate-400">
+          <p className={`text-xs ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}`}>
             Track subculture due dates, schedule transfers, and batch-log tissue culture divisions across all plant lines.
           </p>
         </div>
@@ -109,12 +113,16 @@ export const SubcultureScheduleView: React.FC<SubcultureScheduleViewProps> = ({
       </div>
 
       {/* Filter Tabs */}
-      <div className="flex flex-wrap items-center justify-between gap-3 bg-[#11111a] border border-[#222232] p-3 rounded-xl">
+      <div className={`flex flex-wrap items-center justify-between gap-3 p-3 rounded-xl border ${
+        isDarkMode ? 'bg-[#11111a] border-[#222232]' : 'bg-white border-slate-200 shadow-xs'
+      }`}>
         <div className="flex flex-wrap items-center gap-2">
           <button
             onClick={() => setFilter('all')}
             className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
-              filter === 'all' ? 'bg-[#7b2cbf] text-white' : 'bg-[#181826] text-slate-400 hover:text-white'
+              filter === 'all' 
+                ? 'bg-[#7b2cbf] text-white' 
+                : isDarkMode ? 'bg-[#181826] text-slate-400 hover:text-white' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
             }`}
           >
             All Scheduled ({activeCultures.length})
@@ -123,7 +131,11 @@ export const SubcultureScheduleView: React.FC<SubcultureScheduleViewProps> = ({
           <button
             onClick={() => setFilter('overdue')}
             className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1 ${
-              filter === 'overdue' ? 'bg-amber-500 text-white' : 'bg-[#181826] text-amber-400 border border-amber-500/30'
+              filter === 'overdue' 
+                ? 'bg-amber-500 text-white' 
+                : isDarkMode 
+                  ? 'bg-[#181826] text-amber-400 border border-amber-500/30' 
+                  : 'bg-amber-50 text-amber-800 border border-amber-300'
             }`}
           >
             <AlertTriangle className="w-3.5 h-3.5" />
@@ -133,7 +145,9 @@ export const SubcultureScheduleView: React.FC<SubcultureScheduleViewProps> = ({
           <button
             onClick={() => setFilter('today')}
             className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
-              filter === 'today' ? 'bg-[#7b2cbf] text-white' : 'bg-[#181826] text-slate-400 hover:text-white'
+              filter === 'today' 
+                ? 'bg-[#7b2cbf] text-white' 
+                : isDarkMode ? 'bg-[#181826] text-slate-400 hover:text-white' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
             }`}
           >
             Due Today
@@ -142,7 +156,9 @@ export const SubcultureScheduleView: React.FC<SubcultureScheduleViewProps> = ({
           <button
             onClick={() => setFilter('next7')}
             className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
-              filter === 'next7' ? 'bg-[#7b2cbf] text-white' : 'bg-[#181826] text-slate-400 hover:text-white'
+              filter === 'next7' 
+                ? 'bg-[#7b2cbf] text-white' 
+                : isDarkMode ? 'bg-[#181826] text-slate-400 hover:text-white' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
             }`}
           >
             Next 7 Days
@@ -151,7 +167,9 @@ export const SubcultureScheduleView: React.FC<SubcultureScheduleViewProps> = ({
           <button
             onClick={() => setFilter('next30')}
             className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
-              filter === 'next30' ? 'bg-[#7b2cbf] text-white' : 'bg-[#181826] text-slate-400 hover:text-white'
+              filter === 'next30' 
+                ? 'bg-[#7b2cbf] text-white' 
+                : isDarkMode ? 'bg-[#181826] text-slate-400 hover:text-white' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
             }`}
           >
             Next 30 Days
@@ -160,7 +178,7 @@ export const SubcultureScheduleView: React.FC<SubcultureScheduleViewProps> = ({
 
         <button
           onClick={handleSelectAll}
-          className="text-xs text-[#c77dff] hover:underline font-semibold flex items-center gap-1"
+          className="text-xs text-[#7b2cbf] dark:text-[#c77dff] hover:underline font-semibold flex items-center gap-1"
         >
           {selectedCultureIds.length === filteredCultures.length ? 'Deselect All' : 'Select All Filtered'}
         </button>
@@ -178,54 +196,60 @@ export const SubcultureScheduleView: React.FC<SubcultureScheduleViewProps> = ({
               onClick={() => toggleSelect(c.id)}
               className={`p-4 rounded-2xl border transition-all cursor-pointer flex flex-col sm:flex-row sm:items-center justify-between gap-4 ${
                 isSelected
-                  ? 'bg-[#1a122e] border-[#7b2cbf] shadow-md shadow-[#7b2cbf]/10'
+                  ? isDarkMode ? 'bg-[#1a122e] border-[#7b2cbf] shadow-md shadow-[#7b2cbf]/10' : 'bg-purple-50 border-purple-500 shadow-xs'
                   : isOverdue
-                  ? 'bg-[#181116] border-amber-500/40 hover:border-amber-500/70'
-                  : 'bg-[#11111a] border-[#222232] hover:border-[#7b2cbf]/50'
+                  ? isDarkMode ? 'bg-[#181116] border-amber-500/40 hover:border-amber-500/70' : 'bg-amber-50/70 border-amber-300 hover:border-amber-400'
+                  : isDarkMode ? 'bg-[#11111a] border-[#222232] hover:border-[#7b2cbf]/50' : 'bg-white border-slate-200 hover:border-purple-300 shadow-xs'
               }`}
             >
               <div className="flex items-center gap-3">
                 <button 
                   onClick={(e) => { e.stopPropagation(); toggleSelect(c.id); }}
-                  className="text-slate-400 hover:text-white"
+                  className={isDarkMode ? 'text-slate-400 hover:text-white' : 'text-slate-500 hover:text-slate-900'}
                 >
                   {isSelected ? (
                     <CheckSquare className="w-5 h-5 text-[#9d4edd]" />
                   ) : (
-                    <Square className="w-5 h-5 text-slate-600" />
+                    <Square className={`w-5 h-5 ${isDarkMode ? 'text-slate-600' : 'text-slate-400'}`} />
                   )}
                 </button>
 
-                <div className="w-10 h-10 rounded-xl bg-[#181828] border border-[#2e2e42] flex items-center justify-center text-[#c77dff] shrink-0 font-mono font-bold text-xs">
+                <div className={`w-10 h-10 rounded-xl border flex items-center justify-center font-mono font-bold text-xs shrink-0 ${
+                  isDarkMode ? 'bg-[#181828] border-[#2e2e42] text-[#c77dff]' : 'bg-purple-50 border-purple-200 text-purple-700'
+                }`}>
                   Gen {c.generationCount}
                 </div>
 
                 <div>
                   <div className="flex items-center gap-2">
-                    <span className="font-bold text-white text-base">{c.speciesName}</span>
-                    <span className="font-mono text-[10px] bg-[#1a1a28] text-slate-300 px-2 py-0.5 rounded border border-[#2e2e42]">
+                    <span className={`font-bold text-base ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>{c.speciesName}</span>
+                    <span className={`font-mono text-[10px] px-2 py-0.5 rounded border ${
+                      isDarkMode ? 'bg-[#1a1a28] text-slate-300 border-[#2e2e42]' : 'bg-slate-100 text-slate-700 border-slate-200'
+                    }`}>
                       {c.code}
                     </span>
-                    <span className="text-[10px] bg-[#7b2cbf]/20 text-[#c77dff] px-2 py-0.5 rounded border border-[#7b2cbf]/30">
+                    <span className="text-[10px] bg-[#7b2cbf]/10 text-[#7b2cbf] dark:bg-[#7b2cbf]/20 dark:text-[#c77dff] px-2 py-0.5 rounded border border-[#7b2cbf]/30">
                       {c.stage}
                     </span>
                   </div>
-                  <div className="text-xs text-slate-400 mt-0.5 flex flex-wrap items-center gap-3">
+                  <div className={`text-xs mt-0.5 flex flex-wrap items-center gap-3 ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}`}>
                     <span>Recipe: {c.mediaRecipeName}</span>
                     <span>• {c.vesselCount} jars ({c.plantletsCount} plantlets)</span>
                   </div>
                 </div>
               </div>
 
-              <div className="flex items-center justify-between sm:justify-end gap-4 border-t sm:border-0 border-[#222232] pt-2 sm:pt-0">
+              <div className={`flex items-center justify-between sm:justify-end gap-4 border-t sm:border-0 pt-2 sm:pt-0 ${
+                isDarkMode ? 'border-[#222232]' : 'border-slate-200'
+              }`}>
                 <div className="text-right">
                   <div className={`text-xs font-mono font-bold flex items-center gap-1 ${
-                    isOverdue ? 'text-amber-400' : 'text-slate-200'
+                    isOverdue ? isDarkMode ? 'text-amber-400' : 'text-amber-700' : isDarkMode ? 'text-slate-200' : 'text-slate-800'
                   }`}>
                     <Clock className="w-3.5 h-3.5" />
                     {c.nextSubcultureDate} {isOverdue && '(OVERDUE)'}
                   </div>
-                  <div className="text-[10px] text-slate-500 font-mono">
+                  <div className={`text-[10px] font-mono ${isDarkMode ? 'text-slate-500' : 'text-slate-500'}`}>
                     Last subcultured: {c.lastSubcultureDate}
                   </div>
                 </div>
@@ -253,19 +277,21 @@ export const SubcultureScheduleView: React.FC<SubcultureScheduleViewProps> = ({
       {/* BATCH SUBCULTURE CONFIRMATION MODAL */}
       {showBatchModal && (
         <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-[#12121c] border border-[#2e2e48] rounded-2xl max-w-md w-full p-6 space-y-4">
-            <h3 className="text-base font-bold text-white flex items-center gap-2">
+          <div className={`border rounded-2xl max-w-md w-full p-6 space-y-4 shadow-2xl ${
+            isDarkMode ? 'bg-[#12121c] border-[#2e2e48]' : 'bg-white border-slate-200'
+          }`}>
+            <h3 className={`text-base font-bold flex items-center gap-2 ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>
               <RefreshCw className="w-5 h-5 text-[#9d4edd]" />
               Confirm Batch Subculture ({selectedCultureIds.length} Cultures)
             </h3>
-            <p className="text-xs text-slate-300">
+            <p className={`text-xs ${isDarkMode ? 'text-slate-300' : 'text-slate-600'}`}>
               This action will increment the generation count for all selected cultures by +1, update last subculture date to today, and schedule next cycle dates automatically.
             </p>
 
             <div className="pt-2 flex justify-end gap-2">
               <button
                 onClick={() => setShowBatchModal(false)}
-                className="px-4 py-2 rounded-xl text-xs text-slate-400 hover:bg-[#1a1a28]"
+                className={`px-4 py-2 rounded-xl text-xs ${isDarkMode ? 'text-slate-400 hover:bg-[#1a1a28]' : 'text-slate-600 hover:bg-slate-100'}`}
               >
                 Cancel
               </button>

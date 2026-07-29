@@ -224,7 +224,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
         <div className="lg:col-span-2 space-y-6">
           {/* Culture Pipeline by Stage */}
           <div className={`${cardBg} border p-5 rounded-2xl`}>
-            <div className="flex items-center justify-between mb-4">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 gap-2">
               <div>
                 <h3 className={`text-sm font-bold tracking-tight flex items-center gap-2 ${textPrimary}`}>
                   <Layers className="w-4 h-4 text-[#7b2cbf]" />

@@ -27,10 +27,12 @@ import {
 import { PRICING_TIERS } from '../data/mockData';
 
 interface SettingsDataViewProps {
+  isDarkMode?: boolean;
   onRefreshData: () => void;
 }
 
 export const SettingsDataView: React.FC<SettingsDataViewProps> = ({
+  isDarkMode = false,
   onRefreshData
 }) => {
   const [importJsonText, setImportJsonText] = useState('');
@@ -74,55 +76,69 @@ export const SettingsDataView: React.FC<SettingsDataViewProps> = ({
   return (
     <div className="space-y-6 pb-12">
       {/* Header */}
-      <div className="bg-[#11111a] border border-[#222232] p-5 rounded-2xl flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className={`p-5 rounded-2xl flex flex-col md:flex-row md:items-center justify-between gap-4 border ${
+        isDarkMode ? 'bg-[#11111a] border-[#222232]' : 'bg-white border-slate-200 shadow-xs'
+      }`}>
         <div>
-          <h2 className="text-lg font-extrabold text-white tracking-tight flex items-center gap-2">
+          <h2 className={`text-lg font-extrabold tracking-tight flex items-center gap-2 ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>
             <Settings className="w-5 h-5 text-[#9d4edd]" />
             Data Backup & PCT Partner Settings
           </h2>
-          <p className="text-xs text-slate-400">
+          <p className={`text-xs ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}`}>
             Export client-side backups as CSV/JSON and review PCT affiliate revenue.
           </p>
         </div>
       </div>
 
       {/* PCT Affiliate Revenue Dashboard Simulator */}
-      <div className="bg-gradient-to-r from-[#1b122e] via-[#24133c] to-[#140f24] border border-[#7b2cbf]/40 p-6 rounded-2xl space-y-4">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-[#7b2cbf]/30">
+      <div className={`p-6 rounded-2xl space-y-4 border ${
+        isDarkMode 
+          ? 'bg-gradient-to-r from-[#1b122e] via-[#24133c] to-[#140f24] border-[#7b2cbf]/40' 
+          : 'bg-purple-50/70 border-purple-200'
+      }`}>
+        <div className={`flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b ${
+          isDarkMode ? 'border-[#7b2cbf]/30' : 'border-purple-200'
+        }`}>
           <div>
             <div className="flex items-center gap-2 mb-1">
               <span className="bg-[#7b2cbf] text-white text-[10px] font-mono font-bold px-2 py-0.5 rounded">
                 PCT AFFILIATE PROGRAM
               </span>
-              <span className="text-xs text-slate-300 font-semibold flex items-center gap-1">
-                <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" /> Plant Cell Technology Referral Network
+              <span className={`text-xs font-semibold flex items-center gap-1 ${isDarkMode ? 'text-slate-300' : 'text-slate-700'}`}>
+                <ShieldCheck className="w-3.5 h-3.5 text-emerald-500" /> Plant Cell Technology Referral Network
               </span>
             </div>
-            <h3 className="text-base font-bold text-white">Referred Product Sales & Commission Earnings</h3>
+            <h3 className={`text-base font-bold ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>Referred Product Sales & Commission Earnings</h3>
           </div>
 
           <div className="text-right">
-            <div className="text-2xl font-black text-emerald-400 font-mono">
+            <div className={`text-2xl font-black font-mono ${isDarkMode ? 'text-emerald-400' : 'text-emerald-600'}`}>
               ${affiliateStats.commissionEarnedUSD.toFixed(2)}
             </div>
-            <div className="text-[10px] text-slate-400 font-mono uppercase">15% Commission Earned</div>
+            <div className={`text-[10px] font-mono uppercase ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>15% Commission Earned</div>
           </div>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <div className="bg-[#141422] p-3.5 rounded-xl border border-[#222236]">
-            <span className="text-xs text-slate-400 block mb-1">Total PCT Link Clicks</span>
-            <span className="text-xl font-bold text-white font-mono">{affiliateStats.clicksCount}</span>
+          <div className={`p-3.5 rounded-xl border ${
+            isDarkMode ? 'bg-[#141422] border-[#222236]' : 'bg-white border-purple-200 shadow-xs'
+          }`}>
+            <span className={`text-xs block mb-1 ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>Total PCT Link Clicks</span>
+            <span className={`text-xl font-bold font-mono ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>{affiliateStats.clicksCount}</span>
           </div>
 
-          <div className="bg-[#141422] p-3.5 rounded-xl border border-[#222236]">
-            <span className="text-xs text-slate-400 block mb-1">Referred Customer Orders</span>
-            <span className="text-xl font-bold text-white font-mono">{affiliateStats.ordersCount}</span>
+          <div className={`p-3.5 rounded-xl border ${
+            isDarkMode ? 'bg-[#141422] border-[#222236]' : 'bg-white border-purple-200 shadow-xs'
+          }`}>
+            <span className={`text-xs block mb-1 ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>Referred Customer Orders</span>
+            <span className={`text-xl font-bold font-mono ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>{affiliateStats.ordersCount}</span>
           </div>
 
-          <div className="bg-[#141422] p-3.5 rounded-xl border border-[#222236]">
-            <span className="text-xs text-slate-400 block mb-1">Referred Product Revenue</span>
-            <span className="text-xl font-bold text-white font-mono">${affiliateStats.referredRevenueUSD.toFixed(2)}</span>
+          <div className={`p-3.5 rounded-xl border ${
+            isDarkMode ? 'bg-[#141422] border-[#222236]' : 'bg-white border-purple-200 shadow-xs'
+          }`}>
+            <span className={`text-xs block mb-1 ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>Referred Product Revenue</span>
+            <span className={`text-xl font-bold font-mono ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>${affiliateStats.referredRevenueUSD.toFixed(2)}</span>
           </div>
         </div>
       </div>
@@ -130,12 +146,14 @@ export const SettingsDataView: React.FC<SettingsDataViewProps> = ({
       {/* Backup & Data Controls */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Export Data Box */}
-        <div className="bg-[#11111a] border border-[#222232] p-5 rounded-2xl space-y-4">
-          <h3 className="text-sm font-bold text-white flex items-center gap-2">
+        <div className={`p-5 rounded-2xl space-y-4 border ${
+          isDarkMode ? 'bg-[#11111a] border-[#222232]' : 'bg-white border-slate-200 shadow-xs'
+        }`}>
+          <h3 className={`text-sm font-bold flex items-center gap-2 ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>
             <Download className="w-4 h-4 text-[#9d4edd]" />
             Data Export & Local Backup
           </h3>
-          <p className="text-xs text-slate-300 leading-relaxed">
+          <p className={`text-xs leading-relaxed ${isDarkMode ? 'text-slate-300' : 'text-slate-600'}`}>
             All culture logs, subculture schedules, recipes, and inventory data are saved strictly inside your browser's LocalStorage. Download regular backups to safeguard your lab logs.
           </p>
 
@@ -150,18 +168,24 @@ export const SettingsDataView: React.FC<SettingsDataViewProps> = ({
 
             <button
               onClick={handleExportCSV}
-              className="bg-[#181826] hover:bg-[#222238] border border-[#2c2c42] text-slate-200 text-xs font-bold px-4 py-2.5 rounded-xl transition-all flex items-center gap-2"
+              className={`text-xs font-bold px-4 py-2.5 rounded-xl transition-all flex items-center gap-2 border ${
+                isDarkMode 
+                  ? 'bg-[#181826] hover:bg-[#222238] border-[#2c2c42] text-slate-200' 
+                  : 'bg-slate-100 hover:bg-slate-200 border-slate-300 text-slate-700'
+              }`}
             >
-              <FileSpreadsheet className="w-4 h-4 text-emerald-400" />
+              <FileSpreadsheet className="w-4 h-4 text-emerald-500" />
               <span>Export Cultures CSV</span>
             </button>
           </div>
         </div>
 
         {/* Restore / Import Box */}
-        <div className="bg-[#11111a] border border-[#222232] p-5 rounded-2xl space-y-4">
-          <h3 className="text-sm font-bold text-white flex items-center gap-2">
-            <Upload className="w-4 h-4 text-emerald-400" />
+        <div className={`p-5 rounded-2xl space-y-4 border ${
+          isDarkMode ? 'bg-[#11111a] border-[#222232]' : 'bg-white border-slate-200 shadow-xs'
+        }`}>
+          <h3 className={`text-sm font-bold flex items-center gap-2 ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>
+            <Upload className="w-4 h-4 text-emerald-500" />
             Import / Restore JSON Backup
           </h3>
 
@@ -171,18 +195,22 @@ export const SettingsDataView: React.FC<SettingsDataViewProps> = ({
               placeholder="Paste JSON backup contents here..."
               value={importJsonText}
               onChange={(e) => setImportJsonText(e.target.value)}
-              className="w-full bg-[#181826] border border-[#28283e] text-xs text-white rounded-xl p-3 font-mono outline-none focus:border-[#7b2cbf]"
+              className={`w-full text-xs rounded-xl p-3 font-mono outline-none border ${
+                isDarkMode 
+                  ? 'bg-[#181826] border-[#28283e] text-white focus:border-[#7b2cbf]' 
+                  : 'bg-slate-50 border-slate-300 text-slate-900 focus:bg-white focus:border-purple-400'
+              }`}
             />
 
             {importStatus && (
-              <div className="text-xs font-semibold text-emerald-400">{importStatus}</div>
+              <div className="text-xs font-semibold text-emerald-500">{importStatus}</div>
             )}
 
             <div className="flex items-center justify-between">
               <button
                 type="button"
                 onClick={handleResetDemo}
-                className="text-xs text-rose-400 hover:underline flex items-center gap-1 font-semibold"
+                className="text-xs text-rose-500 hover:underline flex items-center gap-1 font-semibold"
               >
                 <RotateCcw className="w-3.5 h-3.5" />
                 Reset Demo Data
@@ -200,43 +228,51 @@ export const SettingsDataView: React.FC<SettingsDataViewProps> = ({
       </div>
 
       {/* Subscription Pricing Tiers Grid */}
-      <div className="bg-[#11111a] border border-[#222232] p-6 rounded-2xl space-y-5">
+      <div className={`p-6 rounded-2xl space-y-5 border ${
+        isDarkMode ? 'bg-[#11111a] border-[#222232]' : 'bg-white border-slate-200 shadow-xs'
+      }`}>
         <div>
-          <h3 className="text-base font-bold text-white">Subscription & Licensing Tiers</h3>
-          <p className="text-xs text-slate-400">tissue.farmr plan tiers for hobbyists, microprop labs, and commercial nurseries.</p>
+          <h3 className={`text-base font-bold ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>Subscription & Licensing Tiers</h3>
+          <p className={`text-xs ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}`}>tissue.farmr plan tiers for hobbyists, microprop labs, and commercial nurseries.</p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-5 gap-4">
           {PRICING_TIERS.map((tier) => (
             <div
               key={tier.id}
               className={`p-4 rounded-2xl border flex flex-col justify-between space-y-3 ${
                 tier.highlighted
-                  ? 'bg-[#18102a] border-[#7b2cbf] shadow-xl shadow-[#7b2cbf]/20'
-                  : 'bg-[#141420] border-[#222234]'
+                  ? isDarkMode ? 'bg-[#18102a] border-[#7b2cbf] shadow-xl shadow-[#7b2cbf]/20' : 'bg-purple-50 border-purple-400 shadow-md'
+                  : isDarkMode ? 'bg-[#141420] border-[#222234]' : 'bg-slate-50 border-slate-200'
               }`}
             >
               <div className="space-y-2">
-                <div className="flex items-center justify-between">
-                  <span className="font-bold text-white text-xs">{tier.name}</span>
+                <div className="flex items-center justify-between gap-1 w-full">
+                  <span className={`font-bold text-xs ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>{tier.name}</span>
                   {tier.highlighted && (
                     <span className="bg-[#7b2cbf] text-white text-[9px] font-bold px-1.5 py-0.5 rounded font-mono">POPULAR</span>
                   )}
                 </div>
 
-                <div className="text-xl font-black text-white font-mono">{tier.priceMonthly}</div>
+                <div className={`text-xl font-black font-mono ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>{tier.priceMonthly}</div>
 
-                <div className="space-y-1 pt-2 border-t border-[#222232] text-[11px] text-slate-300">
+                <div className={`space-y-1 pt-2 border-t text-[11px] ${
+                  isDarkMode ? 'border-[#222232] text-slate-300' : 'border-slate-200 text-slate-700'
+                }`}>
                   {tier.features.map((f, idx) => (
                     <div key={idx} className="flex items-start gap-1.5">
-                      <CheckCircle2 className="w-3.5 h-3.5 text-[#c77dff] shrink-0 mt-0.5" />
+                      <CheckCircle2 className={`w-3.5 h-3.5 shrink-0 mt-0.5 ${isDarkMode ? 'text-[#c77dff]' : 'text-[#7b2cbf]'}`} />
                       <span>{f}</span>
                     </div>
                   ))}
                 </div>
               </div>
 
-              <button className="w-full text-xs font-bold py-2 rounded-xl bg-[#1d1d2e] hover:bg-[#28283e] text-white border border-[#34344e] transition-colors">
+              <button className={`w-full text-xs font-bold py-2 rounded-xl transition-colors border ${
+                isDarkMode 
+                  ? 'bg-[#1d1d2e] hover:bg-[#28283e] text-white border-[#34344e]' 
+                  : 'bg-white hover:bg-slate-100 text-slate-800 border-slate-300 shadow-xs'
+              }`}>
                 {tier.ctaText}
               </button>
             </div>

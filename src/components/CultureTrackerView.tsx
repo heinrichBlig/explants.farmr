@@ -31,6 +31,7 @@ interface CultureTrackerViewProps {
   activeLabId: string;
   searchTerm: string;
   setSearchTerm: (term: string) => void;
+  isDarkMode?: boolean;
   onRefreshData: () => void;
   onOpenNewCultureModal: () => void;
 }
@@ -41,6 +42,7 @@ export const CultureTrackerView: React.FC<CultureTrackerViewProps> = ({
   activeLabId,
   searchTerm,
   setSearchTerm,
+  isDarkMode = false,
   onRefreshData,
   onOpenNewCultureModal
 }) => {
@@ -106,7 +108,9 @@ export const CultureTrackerView: React.FC<CultureTrackerViewProps> = ({
   return (
     <div className="space-y-6 pb-12">
       {/* Header & Controls Bar */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-[#11111a] border border-[#222232] p-4 rounded-2xl">
+      <div className={`flex flex-col md:flex-row md:items-center justify-between gap-4 p-4 rounded-2xl border ${
+        isDarkMode ? 'bg-[#11111a] border-[#222232]' : 'bg-white border-slate-200 shadow-xs'
+      }`}>
         <div className="flex flex-wrap items-center gap-2">
           {/* Stage Filter Pills */}
           {['All', 'Initiation', 'Multiplication', 'Rooting', 'Acclimatization'].map((stg) => (
@@ -116,7 +120,9 @@ export const CultureTrackerView: React.FC<CultureTrackerViewProps> = ({
               className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
                 stageFilter === stg
                   ? 'bg-[#7b2cbf] text-white shadow-md shadow-[#7b2cbf]/30'
-                  : 'bg-[#181826] text-slate-400 hover:text-slate-200 border border-[#26263a]'
+                  : isDarkMode
+                    ? 'bg-[#181826] text-slate-400 hover:text-slate-200 border border-[#26263a]'
+                    : 'bg-slate-100 text-slate-700 hover:text-slate-900 border border-slate-200'
               }`}
             >
               {stg}
@@ -129,7 +135,11 @@ export const CultureTrackerView: React.FC<CultureTrackerViewProps> = ({
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="bg-[#181826] border border-[#26263a] text-slate-300 text-xs rounded-lg px-2.5 py-1.5 focus:outline-none focus:ring-1 focus:ring-[#7b2cbf]"
+            className={`text-xs rounded-lg px-2.5 py-1.5 focus:outline-none border ${
+              isDarkMode 
+                ? 'bg-[#181826] border-[#26263a] text-slate-300 focus:ring-1 focus:ring-[#7b2cbf]' 
+                : 'bg-white border-slate-300 text-slate-800 focus:border-purple-600'
+            }`}
           >
             <option value="All">All Statuses</option>
             <option value="Healthy">Healthy</option>
@@ -139,17 +149,19 @@ export const CultureTrackerView: React.FC<CultureTrackerViewProps> = ({
           </select>
 
           {/* Grid / Table Toggle */}
-          <div className="flex items-center bg-[#181826] border border-[#26263a] rounded-lg p-0.5">
+          <div className={`flex items-center border rounded-lg p-0.5 ${
+            isDarkMode ? 'bg-[#181826] border-[#26263a]' : 'bg-slate-100 border-slate-200'
+          }`}>
             <button
               onClick={() => setViewMode('grid')}
-              className={`p-1 rounded ${viewMode === 'grid' ? 'bg-[#7b2cbf] text-white' : 'text-slate-400'}`}
+              className={`p-1 rounded ${viewMode === 'grid' ? 'bg-[#7b2cbf] text-white' : isDarkMode ? 'text-slate-400' : 'text-slate-600'}`}
               title="Grid view"
             >
               <LayoutGrid className="w-4 h-4" />
             </button>
             <button
               onClick={() => setViewMode('table')}
-              className={`p-1 rounded ${viewMode === 'table' ? 'bg-[#7b2cbf] text-white' : 'text-slate-400'}`}
+              className={`p-1 rounded ${viewMode === 'table' ? 'bg-[#7b2cbf] text-white' : isDarkMode ? 'text-slate-400' : 'text-slate-600'}`}
               title="Table view"
             >
               <List className="w-4 h-4" />
@@ -159,7 +171,11 @@ export const CultureTrackerView: React.FC<CultureTrackerViewProps> = ({
           {/* Batch Print QR Labels */}
           <button
             onClick={() => setShowBatchLabelModal(true)}
-            className="bg-[#181826] hover:bg-[#252538] border border-[#2e2e42] text-slate-200 text-xs font-semibold px-3 py-1.5 rounded-lg flex items-center gap-1.5 transition-colors"
+            className={`text-xs font-semibold px-3 py-1.5 rounded-lg flex items-center gap-1.5 transition-colors border ${
+              isDarkMode 
+                ? 'bg-[#181826] hover:bg-[#252538] border-[#2e2e42] text-slate-200' 
+                : 'bg-slate-100 hover:bg-slate-200 border-slate-300 text-slate-800'
+            }`}
             title="Print QR labels for all filtered cultures"
           >
             <Printer className="w-3.5 h-3.5 text-[#9d4edd]" />
@@ -178,8 +194,8 @@ export const CultureTrackerView: React.FC<CultureTrackerViewProps> = ({
       </div>
 
       {/* Cultures Count Bar */}
-      <div className="flex items-center justify-between text-xs text-slate-400 px-1">
-        <span>Showing <strong className="text-white">{filteredCultures.length}</strong> culture batches</span>
+      <div className={`flex items-center justify-between text-xs px-1 ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}`}>
+        <span>Showing <strong className={isDarkMode ? 'text-white' : 'text-slate-900'}>{filteredCultures.length}</strong> culture batches</span>
         <span className="font-mono">Lab ID: {activeLabId}</span>
       </div>
 
@@ -193,13 +209,15 @@ export const CultureTrackerView: React.FC<CultureTrackerViewProps> = ({
             return (
               <div 
                 key={c.id}
-                className={`bg-[#11111a] border rounded-2xl overflow-hidden transition-all duration-200 hover:shadow-xl hover:shadow-[#7b2cbf]/10 flex flex-col justify-between group ${
-                  isOverdue ? 'border-amber-500/40' : 'border-[#222232] hover:border-[#7b2cbf]/50'
+                className={`border rounded-2xl overflow-hidden transition-all duration-200 hover:shadow-xl flex flex-col justify-between group ${
+                  isDarkMode 
+                    ? `bg-[#11111a] hover:shadow-[#7b2cbf]/10 ${isOverdue ? 'border-amber-500/40' : 'border-[#222232] hover:border-[#7b2cbf]/50'}` 
+                    : `bg-white shadow-xs hover:shadow-md ${isOverdue ? 'border-amber-300' : 'border-slate-200 hover:border-purple-300'}`
                 }`}
               >
                 <div>
                   {/* Photo Thumbnail / Header */}
-                  <div className="relative h-44 bg-[#181826] overflow-hidden">
+                  <div className={`relative h-44 overflow-hidden ${isDarkMode ? 'bg-[#181826]' : 'bg-slate-100'}`}>
                     {c.photoUrl ? (
                       <img 
                         src={c.photoUrl} 
@@ -207,7 +225,9 @@ export const CultureTrackerView: React.FC<CultureTrackerViewProps> = ({
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" 
                       />
                     ) : (
-                      <div className="w-full h-full flex flex-col items-center justify-center text-slate-600 bg-gradient-to-br from-[#12121e] to-[#181828]">
+                      <div className={`w-full h-full flex flex-col items-center justify-center ${
+                        isDarkMode ? 'text-slate-600 bg-gradient-to-br from-[#12121e] to-[#181828]' : 'text-slate-400 bg-slate-100'
+                      }`}>
                         <ImageIcon className="w-8 h-8 mb-1" />
                         <span className="text-[10px]">No Photo Attached</span>
                       </div>
@@ -227,10 +247,10 @@ export const CultureTrackerView: React.FC<CultureTrackerViewProps> = ({
                     <div className="absolute top-2.5 right-2.5">
                       <span className={`text-[10px] font-bold px-2 py-0.5 rounded-md border backdrop-blur-md ${
                         c.contaminationStatus === 'Healthy' 
-                          ? 'bg-emerald-950/80 text-emerald-300 border-emerald-500/40' 
+                          ? (isDarkMode ? 'bg-emerald-950/80 text-emerald-300 border-emerald-500/40' : 'bg-emerald-100/90 text-emerald-800 border-emerald-300')
                           : c.contaminationStatus === 'Quarantine' 
-                          ? 'bg-amber-950/80 text-amber-300 border-amber-500/40' 
-                          : 'bg-rose-950/80 text-rose-300 border-rose-500/40'
+                          ? (isDarkMode ? 'bg-amber-950/80 text-amber-300 border-amber-500/40' : 'bg-amber-100/90 text-amber-800 border-amber-300')
+                          : (isDarkMode ? 'bg-rose-950/80 text-rose-300 border-rose-500/40' : 'bg-rose-100/90 text-rose-800 border-rose-300')
                       }`}>
                         {c.contaminationStatus}
                       </span>
@@ -245,47 +265,55 @@ export const CultureTrackerView: React.FC<CultureTrackerViewProps> = ({
                   {/* Body Content */}
                   <div className="p-4 space-y-3">
                     <div>
-                      <h3 className="font-bold text-white text-base leading-snug group-hover:text-[#c77dff] transition-colors">
+                      <h3 className={`font-bold text-base leading-snug group-hover:text-[#7b2cbf] transition-colors ${
+                        isDarkMode ? 'text-white' : 'text-slate-900'
+                      }`}>
                         {c.speciesName}
                       </h3>
                       {c.cultivar && (
-                        <p className="text-xs text-slate-400 font-medium">'{c.cultivar}'</p>
+                        <p className={`text-xs font-medium ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>'{c.cultivar}'</p>
                       )}
                     </div>
 
                     {/* Media Recipe & Details */}
-                    <div className="space-y-1.5 text-xs text-slate-300 bg-[#161622] p-2.5 rounded-xl border border-[#222234]">
+                    <div className={`space-y-1.5 text-xs p-2.5 rounded-xl border ${
+                      isDarkMode 
+                        ? 'bg-[#161622] border-[#222234] text-slate-300' 
+                        : 'bg-slate-50 border-slate-200 text-slate-700'
+                    }`}>
                       <div className="flex items-center justify-between text-[11px]">
-                        <span className="text-slate-400">Media Recipe:</span>
-                        <span className="font-medium text-[#c77dff] truncate max-w-[140px]" title={c.mediaRecipeName}>
+                        <span className={isDarkMode ? 'text-slate-400' : 'text-slate-500'}>Media Recipe:</span>
+                        <span className={`font-semibold truncate max-w-[140px] ${isDarkMode ? 'text-[#c77dff]' : 'text-purple-800'}`} title={c.mediaRecipeName}>
                           {c.mediaRecipeName}
                         </span>
                       </div>
                       <div className="flex items-center justify-between text-[11px]">
-                        <span className="text-slate-400">Vessels / Plantlets:</span>
-                        <span className="font-mono text-slate-200">{c.vesselCount} jars • {c.plantletsCount} total</span>
+                        <span className={isDarkMode ? 'text-slate-400' : 'text-slate-500'}>Vessels / Plantlets:</span>
+                        <span className={`font-mono ${isDarkMode ? 'text-slate-200' : 'text-slate-900 font-semibold'}`}>{c.vesselCount} jars • {c.plantletsCount} total</span>
                       </div>
                       <div className="flex items-center justify-between text-[11px]">
-                        <span className="text-slate-400">Explant Type:</span>
-                        <span className="text-slate-300">{c.explantType}</span>
+                        <span className={isDarkMode ? 'text-slate-400' : 'text-slate-500'}>Explant Type:</span>
+                        <span className={isDarkMode ? 'text-slate-300' : 'text-slate-800'}>{c.explantType}</span>
                       </div>
                     </div>
 
                     {/* Notes if present */}
                     {c.notes && (
-                      <p className="text-[11px] text-slate-400 line-clamp-2 italic bg-[#141420] p-2 rounded-lg">
+                      <p className={`text-[11px] line-clamp-2 italic p-2 rounded-lg ${
+                        isDarkMode ? 'bg-[#141420] text-slate-400' : 'bg-slate-100 text-slate-600'
+                      }`}>
                         "{c.notes}"
                       </p>
                     )}
 
                     {/* Subculture Due Countdown */}
                     <div className={`p-2 rounded-xl flex items-center justify-between text-xs font-mono border ${
-                      isOverdue 
-                        ? 'bg-amber-950/20 border-amber-500/30 text-amber-300' 
-                        : 'bg-[#161624] border-[#252538] text-slate-300'
+                      isDarkMode
+                        ? (isOverdue ? 'bg-amber-950/20 border-amber-500/30 text-amber-300' : 'bg-[#161624] border-[#252538] text-slate-300')
+                        : (isOverdue ? 'bg-amber-50 border-amber-200 text-amber-900' : 'bg-slate-50 border-slate-200 text-slate-700')
                     }`}>
                       <div className="flex items-center gap-1.5">
-                        <Clock className={`w-3.5 h-3.5 ${isOverdue ? 'text-amber-400 animate-pulse' : 'text-slate-400'}`} />
+                        <Clock className={`w-3.5 h-3.5 ${isOverdue ? 'text-amber-500 animate-pulse' : 'text-slate-400'}`} />
                         <span>Subculture Due:</span>
                       </div>
                       <span className="font-bold">{c.nextSubcultureDate} {isOverdue && '(OVERDUE)'}</span>
@@ -314,15 +342,23 @@ export const CultureTrackerView: React.FC<CultureTrackerViewProps> = ({
 
                   <button
                     onClick={() => setSelectedLabelCulture(c)}
-                    className="p-2 rounded-xl bg-[#161622] hover:bg-[#222234] text-slate-300 border border-[#242436] transition-colors"
+                    className={`p-2 rounded-xl border transition-colors ${
+                      isDarkMode 
+                        ? 'bg-[#161622] hover:bg-[#222234] text-slate-300 border-[#242436]' 
+                        : 'bg-slate-100 hover:bg-slate-200 text-slate-700 border-slate-300'
+                    }`}
                     title="Generate QR & Barcode Label"
                   >
-                    <QrCode className="w-3.5 h-3.5 text-[#c77dff]" />
+                    <QrCode className={`w-3.5 h-3.5 ${isDarkMode ? 'text-[#c77dff]' : 'text-purple-700'}`} />
                   </button>
 
                   <button
                     onClick={() => handleDelete(c.id)}
-                    className="p-2 rounded-xl bg-[#161622] hover:bg-rose-950/40 text-slate-400 hover:text-rose-400 border border-[#242436] transition-colors"
+                    className={`p-2 rounded-xl border transition-colors ${
+                      isDarkMode 
+                        ? 'bg-[#161622] hover:bg-rose-950/40 text-slate-400 hover:text-rose-400 border-[#242436]' 
+                        : 'bg-slate-100 hover:bg-rose-50 text-slate-500 hover:text-rose-600 border-slate-300'
+                    }`}
                     title="Delete Culture"
                   >
                     <Trash2 className="w-3.5 h-3.5" />
@@ -334,10 +370,14 @@ export const CultureTrackerView: React.FC<CultureTrackerViewProps> = ({
         </div>
       ) : (
         /* TABLE VIEW */
-        <div className="bg-[#11111a] border border-[#222232] rounded-2xl overflow-hidden">
+        <div className={`border rounded-2xl overflow-hidden ${
+          isDarkMode ? 'bg-[#11111a] border-[#222232]' : 'bg-white border-slate-200 shadow-xs'
+        }`}>
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs text-slate-300">
-              <thead className="bg-[#161624] text-slate-400 uppercase font-mono text-[10px] tracking-wider border-b border-[#222232]">
+            <table className={`w-full text-left text-xs ${isDarkMode ? 'text-slate-300' : 'text-slate-700'}`}>
+              <thead className={`uppercase font-mono text-[10px] tracking-wider border-b ${
+                isDarkMode ? 'bg-[#161624] text-slate-400 border-[#222232]' : 'bg-slate-100 text-slate-600 border-slate-200'
+              }`}>
                 <tr>
                   <th className="py-3 px-4">Code</th>
                   <th className="py-3 px-4">Species / Cultivar</th>
@@ -349,42 +389,50 @@ export const CultureTrackerView: React.FC<CultureTrackerViewProps> = ({
                   <th className="py-3 px-4 text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-[#1e1e2d]">
+              <tbody className={`divide-y ${isDarkMode ? 'divide-[#1e1e2d]' : 'divide-slate-200'}`}>
                 {filteredCultures.map((c) => {
                   const isOverdue = c.nextSubcultureDate < todayStr;
                   return (
-                    <tr key={c.id} className="hover:bg-[#161624] transition-colors">
-                      <td className="py-3 px-4 font-mono font-bold text-white">{c.code}</td>
+                    <tr key={c.id} className={`transition-colors ${isDarkMode ? 'hover:bg-[#161624]' : 'hover:bg-slate-50'}`}>
+                      <td className={`py-3 px-4 font-mono font-bold ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>{c.code}</td>
                       <td className="py-3 px-4">
-                        <div className="font-bold text-white">{c.speciesName}</div>
-                        {c.cultivar && <div className="text-[10px] text-slate-400">'{c.cultivar}'</div>}
+                        <div className={`font-bold ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>{c.speciesName}</div>
+                        {c.cultivar && <div className={`text-[10px] ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>'{c.cultivar}'</div>}
                       </td>
                       <td className="py-3 px-4">
-                        <span className="bg-[#7b2cbf]/20 text-[#c77dff] px-2 py-0.5 rounded font-medium border border-[#7b2cbf]/30">
+                        <span className={`px-2 py-0.5 rounded font-medium border ${
+                          isDarkMode ? 'bg-[#7b2cbf]/20 text-[#c77dff] border-[#7b2cbf]/30' : 'bg-purple-100 text-purple-900 border-purple-200'
+                        }`}>
                           {c.stage}
                         </span>
                       </td>
                       <td className="py-3 px-4 font-mono">Gen {c.generationCount}</td>
                       <td className="py-3 px-4">
                         <span className={`px-2 py-0.5 rounded font-semibold text-[10px] ${
-                          c.contaminationStatus === 'Healthy' ? 'bg-emerald-950 text-emerald-400' : 'bg-rose-950 text-rose-400'
+                          c.contaminationStatus === 'Healthy' 
+                            ? (isDarkMode ? 'bg-emerald-950 text-emerald-400' : 'bg-emerald-100 text-emerald-800') 
+                            : (isDarkMode ? 'bg-rose-950 text-rose-400' : 'bg-rose-100 text-rose-800')
                         }`}>
                           {c.contaminationStatus}
                         </span>
                       </td>
                       <td className="py-3 px-4 font-mono">{c.vesselCount} / {c.plantletsCount}</td>
                       <td className="py-3 px-4 font-mono">
-                        <span className={isOverdue ? 'text-amber-400 font-bold' : 'text-slate-300'}>
+                        <span className={isOverdue ? 'text-amber-600 dark:text-amber-400 font-bold' : isDarkMode ? 'text-slate-300' : 'text-slate-700'}>
                           {c.nextSubcultureDate}
                         </span>
                       </td>
                       <td className="py-3 px-4 text-right space-x-2">
                         <button
                           onClick={() => setSelectedLabelCulture(c)}
-                          className="bg-[#181826] text-slate-200 border border-[#2e2e42] hover:bg-[#222234] px-2.5 py-1 rounded-lg text-xs font-medium inline-flex items-center gap-1 transition-colors"
+                          className={`border px-2.5 py-1 rounded-lg text-xs font-medium inline-flex items-center gap-1 transition-colors ${
+                            isDarkMode 
+                              ? 'bg-[#181826] text-slate-200 border-[#2e2e42] hover:bg-[#222234]' 
+                              : 'bg-slate-100 text-slate-800 border-slate-300 hover:bg-slate-200'
+                          }`}
                           title="Print QR / Barcode Label"
                         >
-                          <QrCode className="w-3 h-3 text-[#c77dff]" /> Label
+                          <QrCode className="w-3 h-3 text-[#7b2cbf]" /> Label
                         </button>
                         <button
                           onClick={() => {
@@ -414,69 +462,85 @@ export const CultureTrackerView: React.FC<CultureTrackerViewProps> = ({
       {/* SUBCULTURE ACTION MODAL */}
       {subculturingCulture && (
         <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-[#12121c] border border-[#2e2e48] rounded-2xl max-w-md w-full p-6 space-y-4 animate-in zoom-in-95">
-            <div className="flex items-center justify-between pb-3 border-b border-[#252538]">
+          <div className={`border rounded-2xl max-w-md w-full p-6 space-y-4 animate-in zoom-in-95 ${
+            isDarkMode ? 'bg-[#12121c] border-[#2e2e48] text-slate-200' : 'bg-white border-slate-200 text-slate-900 shadow-2xl'
+          }`}>
+            <div className={`flex items-center justify-between pb-3 border-b ${isDarkMode ? 'border-[#252538]' : 'border-slate-200'}`}>
               <div>
-                <h3 className="text-base font-bold text-white flex items-center gap-2">
+                <h3 className={`text-base font-bold flex items-center gap-2 ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>
                   <RefreshCw className="w-5 h-5 text-[#9d4edd]" />
                   Log Subculture Generation
                 </h3>
-                <p className="text-xs text-slate-400">{subculturingCulture.speciesName} ({subculturingCulture.code})</p>
+                <p className={`text-xs ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>{subculturingCulture.speciesName} ({subculturingCulture.code})</p>
               </div>
               <button 
                 onClick={() => setSubculturingCulture(null)} 
-                className="p-1 rounded-lg text-slate-400 hover:text-white hover:bg-[#1a1a28]"
+                className={`p-1 rounded-lg transition-colors ${isDarkMode ? 'text-slate-400 hover:text-white hover:bg-[#1a1a28]' : 'text-slate-500 hover:text-slate-800 hover:bg-slate-100'}`}
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
             <form onSubmit={handlePerformSubculture} className="space-y-4">
-              <div className="bg-[#181826] p-3 rounded-xl border border-[#26263a] text-xs text-slate-300 space-y-1">
-                <div>Current Generation: <strong className="text-white font-mono">Gen {subculturingCulture.generationCount}</strong></div>
-                <div>Next Generation will be: <strong className="text-[#c77dff] font-mono">Gen {subculturingCulture.generationCount + 1}</strong></div>
+              <div className={`p-3 rounded-xl border text-xs space-y-1 ${
+                isDarkMode ? 'bg-[#181826] border-[#26263a] text-slate-300' : 'bg-purple-50/70 border-purple-200 text-purple-950'
+              }`}>
+                <div>Current Generation: <strong className="font-mono">Gen {subculturingCulture.generationCount}</strong></div>
+                <div>Next Generation will be: <strong className="text-[#7b2cbf] font-mono font-bold">Gen {subculturingCulture.generationCount + 1}</strong></div>
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="text-xs text-slate-400 mb-1 block">New Vessel Count</label>
+                  <label className={`text-xs mb-1 block ${isDarkMode ? 'text-slate-400' : 'text-slate-600 font-medium'}`}>New Vessel Count</label>
                   <input
                     type="number"
                     min="1"
                     value={subcultureForm.vesselCount}
                     onChange={(e) => setSubcultureForm({ ...subcultureForm, vesselCount: Number(e.target.value) })}
-                    className="w-full bg-[#181826] border border-[#2e2e42] rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:ring-1 focus:ring-[#7b2cbf]"
+                    className={`w-full border rounded-lg px-3 py-2 text-xs outline-none ${
+                      isDarkMode 
+                        ? 'bg-[#181826] border-[#2e2e42] text-white focus:ring-1 focus:ring-[#7b2cbf]' 
+                        : 'bg-slate-50 border-slate-300 text-slate-900 focus:bg-white focus:border-purple-600'
+                    }`}
                     required
                   />
                 </div>
 
                 <div>
-                  <label className="text-xs text-slate-400 mb-1 block">Estimated Plantlets Count</label>
+                  <label className={`text-xs mb-1 block ${isDarkMode ? 'text-slate-400' : 'text-slate-600 font-medium'}`}>Estimated Plantlets Count</label>
                   <input
                     type="number"
                     min="1"
                     value={subcultureForm.plantletsCount}
                     onChange={(e) => setSubcultureForm({ ...subcultureForm, plantletsCount: Number(e.target.value) })}
-                    className="w-full bg-[#181826] border border-[#2e2e42] rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:ring-1 focus:ring-[#7b2cbf]"
+                    className={`w-full border rounded-lg px-3 py-2 text-xs outline-none ${
+                      isDarkMode 
+                        ? 'bg-[#181826] border-[#2e2e42] text-white focus:ring-1 focus:ring-[#7b2cbf]' 
+                        : 'bg-slate-50 border-slate-300 text-slate-900 focus:bg-white focus:border-purple-600'
+                    }`}
                     required
                   />
                 </div>
               </div>
 
               <div>
-                <label className="text-xs text-slate-400 mb-1 block">Next Subculture Interval (Days)</label>
+                <label className={`text-xs mb-1 block ${isDarkMode ? 'text-slate-400' : 'text-slate-600 font-medium'}`}>Next Subculture Interval (Days)</label>
                 <input
                   type="number"
                   min="7"
                   value={subcultureForm.intervalDays}
                   onChange={(e) => setSubcultureForm({ ...subcultureForm, intervalDays: Number(e.target.value) })}
-                  className="w-full bg-[#181826] border border-[#2e2e42] rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:ring-1 focus:ring-[#7b2cbf]"
+                  className={`w-full border rounded-lg px-3 py-2 text-xs outline-none ${
+                    isDarkMode 
+                      ? 'bg-[#181826] border-[#2e2e42] text-white focus:ring-1 focus:ring-[#7b2cbf]' 
+                      : 'bg-slate-50 border-slate-300 text-slate-900 focus:bg-white focus:border-purple-600'
+                  }`}
                   required
                 />
               </div>
 
               <div>
-                <label className="text-xs text-slate-400 mb-1 block">Media Recipe for Next Subculture</label>
+                <label className={`text-xs mb-1 block ${isDarkMode ? 'text-slate-400' : 'text-slate-600 font-medium'}`}>Media Recipe for Next Subculture</label>
                 <select
                   value={subcultureForm.recipeId}
                   onChange={(e) => {
@@ -487,7 +551,11 @@ export const CultureTrackerView: React.FC<CultureTrackerViewProps> = ({
                       recipeName: sel ? sel.name : subculturingCulture.mediaRecipeName 
                     });
                   }}
-                  className="w-full bg-[#181826] border border-[#2e2e42] rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:ring-1 focus:ring-[#7b2cbf]"
+                  className={`w-full border rounded-lg px-3 py-2 text-xs outline-none ${
+                    isDarkMode 
+                      ? 'bg-[#181826] border-[#2e2e42] text-white focus:ring-1 focus:ring-[#7b2cbf]' 
+                      : 'bg-slate-50 border-slate-300 text-slate-900 focus:bg-white focus:border-purple-600'
+                  }`}
                 >
                   {recipes.map((r) => (
                     <option key={r.id} value={r.id}>
@@ -501,7 +569,9 @@ export const CultureTrackerView: React.FC<CultureTrackerViewProps> = ({
                 <button
                   type="button"
                   onClick={() => setSubculturingCulture(null)}
-                  className="px-4 py-2 rounded-xl text-xs font-medium text-slate-400 hover:bg-[#1a1a28]"
+                  className={`px-4 py-2 rounded-xl text-xs font-medium ${
+                    isDarkMode ? 'text-slate-400 hover:bg-[#1a1a28]' : 'text-slate-600 hover:bg-slate-100'
+                  }`}
                 >
                   Cancel
                 </button>
@@ -522,6 +592,7 @@ export const CultureTrackerView: React.FC<CultureTrackerViewProps> = ({
         <CultureLabelModal
           culture={selectedLabelCulture}
           allCultures={filteredCultures}
+          isDarkMode={isDarkMode}
           onClose={() => {
             setSelectedLabelCulture(null);
             setShowBatchLabelModal(false);

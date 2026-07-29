@@ -659,8 +659,7 @@ export const PRICING_TIERS: PricingTier[] = [
       'Everything in Pro',
       'Team Member Role Simulation',
       'Custom API & QR Code Label Generator',
-      'Dedicated PCT Masterclass Consultation',
-      'Free for Verified PCT Commercial Customers'
+      'Dedicated PCT Masterclass Consultation'
     ],
     ctaText: 'Contact Enterprise Sales'
   },

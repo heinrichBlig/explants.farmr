@@ -14,6 +14,7 @@ interface NewCultureModalProps {
   onClose: () => void;
   recipes: MediaRecipe[];
   activeLabId: string;
+  isDarkMode?: boolean;
   onCultureCreated: () => void;
 }
 
@@ -22,6 +23,7 @@ export const NewCultureModal: React.FC<NewCultureModalProps> = ({
   onClose,
   recipes,
   activeLabId,
+  isDarkMode = false,
   onCultureCreated
 }) => {
   const [speciesName, setSpeciesName] = useState('Monstera deliciosa');
@@ -80,13 +82,20 @@ export const NewCultureModal: React.FC<NewCultureModalProps> = ({
 
   return (
     <div className="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-4 overflow-y-auto">
-      <div className="bg-[#12121e] border border-[#2e2e48] rounded-2xl max-w-lg w-full p-6 space-y-4 animate-in zoom-in-95 my-8">
-        <div className="flex items-center justify-between pb-3 border-b border-[#252538]">
+      <div className={`border rounded-2xl max-w-lg w-full p-6 space-y-4 animate-in zoom-in-95 my-8 shadow-2xl ${
+        isDarkMode ? 'bg-[#12121e] border-[#2e2e48]' : 'bg-white border-slate-200 text-slate-900'
+      }`}>
+        <div className={`flex items-center justify-between pb-3 border-b ${
+          isDarkMode ? 'border-[#252538]' : 'border-slate-200'
+        }`}>
           <div className="flex items-center gap-2">
             <FlaskConical className="w-5 h-5 text-[#9d4edd]" />
-            <h3 className="text-base font-bold text-white">Log New Tissue Culture Initiation</h3>
+            <h3 className={`text-base font-bold ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>Log New Tissue Culture Initiation</h3>
           </div>
-          <button onClick={onClose} className="p-1 rounded-lg text-slate-400 hover:text-white hover:bg-[#1a1a28]">
+          <button 
+            onClick={onClose} 
+            className={`p-1 rounded-lg ${isDarkMode ? 'text-slate-400 hover:text-white hover:bg-[#1a1a28]' : 'text-slate-500 hover:text-slate-900 hover:bg-slate-100'}`}
+          >
             <X className="w-5 h-5" />
           </button>
         </div>
@@ -94,45 +103,53 @@ export const NewCultureModal: React.FC<NewCultureModalProps> = ({
         <form onSubmit={handleSubmit} className="space-y-4 text-xs">
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="text-slate-400 mb-1 block">Species / Genus Name</label>
+              <label className={`mb-1 block ${isDarkMode ? 'text-slate-400' : 'text-slate-700 font-medium'}`}>Species / Genus Name</label>
               <input
                 type="text"
                 value={speciesName}
                 onChange={(e) => setSpeciesName(e.target.value)}
-                className="w-full bg-[#181826] border border-[#2e2e42] rounded-lg px-3 py-2 text-white"
+                className={`w-full rounded-lg px-3 py-2 border outline-none ${
+                  isDarkMode ? 'bg-[#181826] border-[#2e2e42] text-white' : 'bg-slate-50 border-slate-300 text-slate-900 focus:bg-white'
+                }`}
                 required
               />
             </div>
 
             <div>
-              <label className="text-slate-400 mb-1 block">Cultivar / Clone ID</label>
+              <label className={`mb-1 block ${isDarkMode ? 'text-slate-400' : 'text-slate-700 font-medium'}`}>Cultivar / Clone ID</label>
               <input
                 type="text"
                 value={cultivar}
                 onChange={(e) => setCultivar(e.target.value)}
-                className="w-full bg-[#181826] border border-[#2e2e42] rounded-lg px-3 py-2 text-white"
+                className={`w-full rounded-lg px-3 py-2 border outline-none ${
+                  isDarkMode ? 'bg-[#181826] border-[#2e2e42] text-white' : 'bg-slate-50 border-slate-300 text-slate-900 focus:bg-white'
+                }`}
               />
             </div>
           </div>
 
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="text-slate-400 mb-1 block">Batch Code</label>
+              <label className={`mb-1 block ${isDarkMode ? 'text-slate-400' : 'text-slate-700 font-medium'}`}>Batch Code</label>
               <input
                 type="text"
                 value={code}
                 onChange={(e) => setCode(e.target.value)}
-                className="w-full bg-[#181826] border border-[#2e2e42] rounded-lg px-3 py-2 text-white font-mono"
+                className={`w-full rounded-lg px-3 py-2 font-mono border outline-none ${
+                  isDarkMode ? 'bg-[#181826] border-[#2e2e42] text-white' : 'bg-slate-50 border-slate-300 text-slate-900 focus:bg-white'
+                }`}
                 required
               />
             </div>
 
             <div>
-              <label className="text-slate-400 mb-1 block">Growth Stage</label>
+              <label className={`mb-1 block ${isDarkMode ? 'text-slate-400' : 'text-slate-700 font-medium'}`}>Growth Stage</label>
               <select
                 value={stage}
                 onChange={(e: any) => setStage(e.target.value)}
-                className="w-full bg-[#181826] border border-[#2e2e42] rounded-lg px-2.5 py-2 text-white"
+                className={`w-full rounded-lg px-2.5 py-2 border outline-none ${
+                  isDarkMode ? 'bg-[#181826] border-[#2e2e42] text-white' : 'bg-slate-50 border-slate-300 text-slate-900 focus:bg-white'
+                }`}
               >
                 <option value="Initiation">Stage I: Initiation</option>
                 <option value="Multiplication">Stage II: Multiplication</option>
@@ -144,11 +161,13 @@ export const NewCultureModal: React.FC<NewCultureModalProps> = ({
 
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="text-slate-400 mb-1 block">Explant Type</label>
+              <label className={`mb-1 block ${isDarkMode ? 'text-slate-400' : 'text-slate-700 font-medium'}`}>Explant Type</label>
               <select
                 value={explantType}
                 onChange={(e: any) => setExplantType(e.target.value)}
-                className="w-full bg-[#181826] border border-[#2e2e42] rounded-lg px-2.5 py-2 text-white"
+                className={`w-full rounded-lg px-2.5 py-2 border outline-none ${
+                  isDarkMode ? 'bg-[#181826] border-[#2e2e42] text-white' : 'bg-slate-50 border-slate-300 text-slate-900 focus:bg-white'
+                }`}
               >
                 <option value="Nodal Segment">Nodal Segment</option>
                 <option value="Shoot Tip">Shoot Tip</option>
@@ -161,23 +180,27 @@ export const NewCultureModal: React.FC<NewCultureModalProps> = ({
             </div>
 
             <div>
-              <label className="text-slate-400 mb-1 block">Subculture Cycle (Days)</label>
+              <label className={`mb-1 block ${isDarkMode ? 'text-slate-400' : 'text-slate-700 font-medium'}`}>Subculture Cycle (Days)</label>
               <input
                 type="number"
                 value={subcultureIntervalDays}
                 onChange={(e) => setSubcultureIntervalDays(Number(e.target.value))}
-                className="w-full bg-[#181826] border border-[#2e2e42] rounded-lg px-3 py-2 text-white font-mono"
+                className={`w-full rounded-lg px-3 py-2 font-mono border outline-none ${
+                  isDarkMode ? 'bg-[#181826] border-[#2e2e42] text-white' : 'bg-slate-50 border-slate-300 text-slate-900 focus:bg-white'
+                }`}
                 required
               />
             </div>
           </div>
 
           <div>
-            <label className="text-slate-400 mb-1 block">Media Recipe Used</label>
+            <label className={`mb-1 block ${isDarkMode ? 'text-slate-400' : 'text-slate-700 font-medium'}`}>Media Recipe Used</label>
             <select
               value={mediaRecipeId}
               onChange={(e) => setMediaRecipeId(e.target.value)}
-              className="w-full bg-[#181826] border border-[#2e2e42] rounded-lg px-3 py-2 text-white"
+              className={`w-full rounded-lg px-3 py-2 border outline-none ${
+                isDarkMode ? 'bg-[#181826] border-[#2e2e42] text-white' : 'bg-slate-50 border-slate-300 text-slate-900 focus:bg-white'
+              }`}
             >
               {recipes.map(r => (
                 <option key={r.id} value={r.id}>
@@ -189,46 +212,54 @@ export const NewCultureModal: React.FC<NewCultureModalProps> = ({
 
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="text-slate-400 mb-1 block">Vessels Count</label>
+              <label className={`mb-1 block ${isDarkMode ? 'text-slate-400' : 'text-slate-700 font-medium'}`}>Vessels Count</label>
               <input
                 type="number"
                 value={vesselCount}
                 onChange={(e) => setVesselCount(Number(e.target.value))}
-                className="w-full bg-[#181826] border border-[#2e2e42] rounded-lg px-3 py-2 text-white font-mono"
+                className={`w-full rounded-lg px-3 py-2 font-mono border outline-none ${
+                  isDarkMode ? 'bg-[#181826] border-[#2e2e42] text-white' : 'bg-slate-50 border-slate-300 text-slate-900 focus:bg-white'
+                }`}
                 required
               />
             </div>
 
             <div>
-              <label className="text-slate-400 mb-1 block">Plantlets Count</label>
+              <label className={`mb-1 block ${isDarkMode ? 'text-slate-400' : 'text-slate-700 font-medium'}`}>Plantlets Count</label>
               <input
                 type="number"
                 value={plantletsCount}
                 onChange={(e) => setPlantletsCount(Number(e.target.value))}
-                className="w-full bg-[#181826] border border-[#2e2e42] rounded-lg px-3 py-2 text-white font-mono"
+                className={`w-full rounded-lg px-3 py-2 font-mono border outline-none ${
+                  isDarkMode ? 'bg-[#181826] border-[#2e2e42] text-white' : 'bg-slate-50 border-slate-300 text-slate-900 focus:bg-white'
+                }`}
                 required
               />
             </div>
           </div>
 
           <div>
-            <label className="text-slate-400 mb-1 block">Photo URL Attachment</label>
+            <label className={`mb-1 block ${isDarkMode ? 'text-slate-400' : 'text-slate-700 font-medium'}`}>Photo URL Attachment</label>
             <input
               type="text"
               value={photoUrl}
               onChange={(e) => setPhotoUrl(e.target.value)}
-              className="w-full bg-[#181826] border border-[#2e2e42] rounded-lg px-3 py-2 text-white text-[11px]"
+              className={`w-full rounded-lg px-3 py-2 text-[11px] border outline-none ${
+                isDarkMode ? 'bg-[#181826] border-[#2e2e42] text-white' : 'bg-slate-50 border-slate-300 text-slate-900 focus:bg-white'
+              }`}
               placeholder="https://..."
             />
           </div>
 
           <div>
-            <label className="text-slate-400 mb-1 block">Notes & Disinfection Protocol</label>
+            <label className={`mb-1 block ${isDarkMode ? 'text-slate-400' : 'text-slate-700 font-medium'}`}>Notes & Disinfection Protocol</label>
             <textarea
               rows={2}
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
-              className="w-full bg-[#181826] border border-[#2e2e42] rounded-lg px-3 py-2 text-white"
+              className={`w-full rounded-lg px-3 py-2 border outline-none ${
+                isDarkMode ? 'bg-[#181826] border-[#2e2e42] text-white' : 'bg-slate-50 border-slate-300 text-slate-900 focus:bg-white'
+              }`}
             />
           </div>
 
@@ -236,7 +267,7 @@ export const NewCultureModal: React.FC<NewCultureModalProps> = ({
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 text-slate-400 hover:bg-[#1a1a28] rounded-xl"
+              className={`px-4 py-2 rounded-xl ${isDarkMode ? 'text-slate-400 hover:bg-[#1a1a28]' : 'text-slate-600 hover:bg-slate-100'}`}
             >
               Cancel
             </button>

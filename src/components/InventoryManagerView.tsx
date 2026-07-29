@@ -17,12 +17,14 @@ import { saveInventoryItem, deleteInventoryItem, restockInventoryItem, recordPct
 interface InventoryManagerViewProps {
   inventory: InventoryItem[];
   activeLabId: string;
+  isDarkMode?: boolean;
   onRefreshData: () => void;
 }
 
 export const InventoryManagerView: React.FC<InventoryManagerViewProps> = ({
   inventory,
   activeLabId,
+  isDarkMode = false,
   onRefreshData
 }) => {
   const [categoryFilter, setCategoryFilter] = useState<string>('All');
@@ -83,13 +85,15 @@ export const InventoryManagerView: React.FC<InventoryManagerViewProps> = ({
   return (
     <div className="space-y-6 pb-12">
       {/* Header */}
-      <div className="bg-[#11111a] border border-[#222232] p-5 rounded-2xl flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className={`p-5 rounded-2xl flex flex-col md:flex-row md:items-center justify-between gap-4 border ${
+        isDarkMode ? 'bg-[#11111a] border-[#222232]' : 'bg-white border-slate-200 shadow-xs'
+      }`}>
         <div>
-          <h2 className="text-lg font-extrabold text-white tracking-tight flex items-center gap-2">
+          <h2 className={`text-lg font-extrabold tracking-tight flex items-center gap-2 ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>
             <Package className="w-5 h-5 text-[#9d4edd]" />
             Lab Reagent & Supplies Inventory
           </h2>
-          <p className="text-xs text-slate-400">
+          <p className={`text-xs ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}`}>
             Monitor stock levels for PPM™ biocide, media salts, PGRs, gelling agents, and vessels with 1-click PCT restock links.
           </p>
         </div>
@@ -105,14 +109,16 @@ export const InventoryManagerView: React.FC<InventoryManagerViewProps> = ({
 
       {/* Low Stock Alert Header if any */}
       {lowStockCount > 0 && (
-        <div className="bg-amber-950/30 border border-amber-500/40 p-4 rounded-2xl flex items-center justify-between">
+        <div className={`p-4 rounded-2xl flex items-center justify-between border ${
+          isDarkMode ? 'bg-amber-950/30 border-amber-500/40' : 'bg-amber-50 border-amber-300'
+        }`}>
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center shrink-0">
+            <div className="w-9 h-9 rounded-xl bg-amber-500/20 text-amber-500 flex items-center justify-center shrink-0">
               <AlertTriangle className="w-5 h-5" />
             </div>
             <div>
-              <h4 className="text-xs font-bold text-amber-300">{lowStockCount} Reagents Running Below Threshold!</h4>
-              <p className="text-[11px] text-slate-300">Order directly from Plant Cell Technology to prevent culture subculture delays.</p>
+              <h4 className={`text-xs font-bold ${isDarkMode ? 'text-amber-300' : 'text-amber-900'}`}>{lowStockCount} Reagents Running Below Threshold!</h4>
+              <p className={`text-[11px] ${isDarkMode ? 'text-slate-300' : 'text-amber-800'}`}>Order directly from Plant Cell Technology to prevent culture subculture delays.</p>
             </div>
           </div>
 
@@ -127,14 +133,18 @@ export const InventoryManagerView: React.FC<InventoryManagerViewProps> = ({
       )}
 
       {/* Filter Bar */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-[#11111a] border border-[#222232] p-3 rounded-xl">
+      <div className={`flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3 rounded-xl border ${
+        isDarkMode ? 'bg-[#11111a] border-[#222232]' : 'bg-white border-slate-200 shadow-xs'
+      }`}>
         <div className="flex items-center gap-2 overflow-x-auto pb-1 sm:pb-0">
           {['All', 'PPM', 'Media Salt', 'PGR', 'Gelling Agent', 'Vessel', 'Sugar & Carbon'].map((cat) => (
             <button
               key={cat}
               onClick={() => setCategoryFilter(cat)}
               className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-all ${
-                categoryFilter === cat ? 'bg-[#7b2cbf] text-white' : 'bg-[#181826] text-slate-400 hover:text-white'
+                categoryFilter === cat 
+                  ? 'bg-[#7b2cbf] text-white' 
+                  : isDarkMode ? 'bg-[#181826] text-slate-400 hover:text-white' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
               }`}
             >
               {cat}
@@ -143,13 +153,17 @@ export const InventoryManagerView: React.FC<InventoryManagerViewProps> = ({
         </div>
 
         <div className="relative w-full sm:w-60">
-          <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-2.5 pointer-events-none" />
+          <Search className={`w-3.5 h-3.5 absolute left-3 top-2.5 pointer-events-none ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`} />
           <input
             type="text"
             placeholder="Search inventory..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full bg-[#181826] border border-[#28283e] focus:border-[#7b2cbf] text-xs text-white rounded-lg pl-8 pr-3 py-1.5 outline-none"
+            className={`w-full text-xs rounded-lg pl-8 pr-3 py-1.5 outline-none border ${
+              isDarkMode 
+                ? 'bg-[#181826] border-[#28283e] focus:border-[#7b2cbf] text-white' 
+                : 'bg-slate-50 border-slate-300 focus:border-purple-600 text-slate-900 focus:bg-white'
+            }`}
           />
         </div>
       </div>
@@ -163,37 +177,43 @@ export const InventoryManagerView: React.FC<InventoryManagerViewProps> = ({
           return (
             <div
               key={item.id}
-              className={`bg-[#11111a] border rounded-2xl p-5 space-y-4 flex flex-col justify-between transition-all ${
-                isLow ? 'border-amber-500/40 bg-amber-950/10' : 'border-[#222232] hover:border-[#7b2cbf]/50'
+              className={`border rounded-2xl p-5 space-y-4 flex flex-col justify-between transition-all ${
+                isLow 
+                  ? isDarkMode ? 'border-amber-500/40 bg-amber-950/10' : 'border-amber-300 bg-amber-50/50' 
+                  : isDarkMode ? 'bg-[#11111a] border-[#222232] hover:border-[#7b2cbf]/50' : 'bg-white border-slate-200 hover:border-purple-400 shadow-xs'
               }`}
             >
               <div className="space-y-3">
                 <div className="flex items-start justify-between gap-2">
                   <div>
-                    <span className="text-[10px] font-mono font-bold bg-[#181828] text-slate-400 px-2 py-0.5 rounded border border-[#2e2e42] mb-1 inline-block">
+                    <span className={`text-[10px] font-mono font-bold px-2 py-0.5 rounded border mb-1 inline-block ${
+                      isDarkMode ? 'bg-[#181828] text-slate-400 border-[#2e2e42]' : 'bg-slate-100 text-slate-600 border-slate-200'
+                    }`}>
                       {item.category}
                     </span>
-                    <h3 className="font-bold text-white text-base leading-snug">{item.name}</h3>
+                    <h3 className={`font-bold text-base leading-snug ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>{item.name}</h3>
                   </div>
 
                   {item.isPctProduct && (
-                    <span className="bg-[#7b2cbf]/30 text-[#c77dff] border border-[#7b2cbf]/40 text-[9px] font-bold px-1.5 py-0.5 rounded font-mono shrink-0">
+                    <span className="bg-[#7b2cbf]/10 text-[#7b2cbf] dark:bg-[#7b2cbf]/30 dark:text-[#c77dff] border border-[#7b2cbf]/40 text-[9px] font-bold px-1.5 py-0.5 rounded font-mono shrink-0">
                       PCT Official
                     </span>
                   )}
                 </div>
 
                 <div className="flex items-baseline justify-between">
-                  <div className="text-2xl font-black text-white font-mono">
-                    {item.currentStock} <span className="text-xs text-slate-400 font-normal">{item.unit}</span>
+                  <div className={`text-2xl font-black font-mono ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>
+                    {item.currentStock} <span className={`text-xs font-normal ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>{item.unit}</span>
                   </div>
-                  <div className="text-xs font-mono text-slate-400">
+                  <div className={`text-xs font-mono ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>
                     Min: {item.minThreshold} {item.unit}
                   </div>
                 </div>
 
                 {/* Stock Gauge */}
-                <div className="h-2 w-full bg-[#181828] rounded-full overflow-hidden border border-[#26263a]">
+                <div className={`h-2 w-full rounded-full overflow-hidden border ${
+                  isDarkMode ? 'bg-[#181828] border-[#26263a]' : 'bg-slate-100 border-slate-200'
+                }`}>
                   <div
                     style={{ width: `${percentage}%` }}
                     className={`h-full transition-all duration-500 ${
@@ -202,24 +222,26 @@ export const InventoryManagerView: React.FC<InventoryManagerViewProps> = ({
                   />
                 </div>
 
-                <div className="flex items-center justify-between text-[11px] text-slate-400 pt-1">
+                <div className={`flex items-center justify-between text-[11px] pt-1 ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>
                   <span>Location: {item.location}</span>
                   <span>Restocked: {item.lastRestocked}</span>
                 </div>
               </div>
 
               {/* Actions */}
-              <div className="pt-2 border-t border-[#222232] flex items-center justify-between gap-2">
+              <div className={`pt-2 border-t flex items-center justify-between gap-2 ${isDarkMode ? 'border-[#222232]' : 'border-slate-200'}`}>
                 <div className="flex items-center gap-1">
                   <button
                     onClick={() => handleQuickRestock(item.id, 10)}
-                    className="text-[11px] bg-[#181826] hover:bg-[#222238] border border-[#2e2e42] text-slate-200 px-2 py-1 rounded-lg font-mono font-medium"
+                    className={`text-[11px] px-2 py-1 rounded-lg font-mono font-medium border ${
+                      isDarkMode ? 'bg-[#181826] hover:bg-[#222238] border-[#2e2e42] text-slate-200' : 'bg-slate-100 hover:bg-slate-200 border-slate-300 text-slate-700'
+                    }`}
                   >
                     +10 {item.unit}
                   </button>
                   <button
                     onClick={() => handleDelete(item.id)}
-                    className="p-1.5 text-slate-500 hover:text-rose-400 rounded-lg hover:bg-rose-950/20"
+                    className={`p-1.5 rounded-lg ${isDarkMode ? 'text-slate-500 hover:text-rose-400 hover:bg-rose-950/20' : 'text-slate-400 hover:text-rose-600 hover:bg-rose-50'}`}
                   >
                     <Trash2 className="w-3.5 h-3.5" />
                   </button>
@@ -241,31 +263,37 @@ export const InventoryManagerView: React.FC<InventoryManagerViewProps> = ({
       {/* CREATE NEW ITEM MODAL */}
       {newItemModal && (
         <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-[#12121c] border border-[#2e2e48] rounded-2xl max-w-md w-full p-6 space-y-4">
-            <h3 className="text-base font-bold text-white flex items-center gap-2">
+          <div className={`border rounded-2xl max-w-md w-full p-6 space-y-4 shadow-2xl ${
+            isDarkMode ? 'bg-[#12121c] border-[#2e2e48]' : 'bg-white border-slate-200'
+          }`}>
+            <h3 className={`text-base font-bold flex items-center gap-2 ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>
               <Package className="w-5 h-5 text-[#9d4edd]" />
               Add Custom Reagent / Supply
             </h3>
 
             <form onSubmit={handleCreateItem} className="space-y-3">
               <div>
-                <label className="text-xs text-slate-400 mb-1 block">Item Name</label>
+                <label className={`text-xs mb-1 block ${isDarkMode ? 'text-slate-400' : 'text-slate-700 font-medium'}`}>Item Name</label>
                 <input
                   type="text"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="w-full bg-[#181826] border border-[#2e2e42] rounded-lg px-3 py-2 text-xs text-white"
+                  className={`w-full rounded-lg px-3 py-2 text-xs border outline-none ${
+                    isDarkMode ? 'bg-[#181826] border-[#2e2e42] text-white' : 'bg-slate-50 border-slate-300 text-slate-900 focus:bg-white'
+                  }`}
                   required
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="text-xs text-slate-400 mb-1 block">Category</label>
+                  <label className={`text-xs mb-1 block ${isDarkMode ? 'text-slate-400' : 'text-slate-700 font-medium'}`}>Category</label>
                   <select
                     value={category}
                     onChange={(e: any) => setCategory(e.target.value)}
-                    className="w-full bg-[#181826] border border-[#2e2e42] rounded-lg px-2.5 py-2 text-xs text-white"
+                    className={`w-full rounded-lg px-2.5 py-2 text-xs border outline-none ${
+                      isDarkMode ? 'bg-[#181826] border-[#2e2e42] text-white' : 'bg-slate-50 border-slate-300 text-slate-900 focus:bg-white'
+                    }`}
                   >
                     <option value="PPM">PPM Biocide</option>
                     <option value="Media Salt">Media Salt</option>
@@ -279,11 +307,13 @@ export const InventoryManagerView: React.FC<InventoryManagerViewProps> = ({
                 </div>
 
                 <div>
-                  <label className="text-xs text-slate-400 mb-1 block">Unit</label>
+                  <label className={`text-xs mb-1 block ${isDarkMode ? 'text-slate-400' : 'text-slate-700 font-medium'}`}>Unit</label>
                   <select
                     value={unit}
                     onChange={(e: any) => setUnit(e.target.value)}
-                    className="w-full bg-[#181826] border border-[#2e2e42] rounded-lg px-2.5 py-2 text-xs text-white font-mono"
+                    className={`w-full rounded-lg px-2.5 py-2 text-xs font-mono border outline-none ${
+                      isDarkMode ? 'bg-[#181826] border-[#2e2e42] text-white' : 'bg-slate-50 border-slate-300 text-slate-900 focus:bg-white'
+                    }`}
                   >
                     <option value="ml">ml</option>
                     <option value="L">L</option>
@@ -297,35 +327,41 @@ export const InventoryManagerView: React.FC<InventoryManagerViewProps> = ({
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="text-xs text-slate-400 mb-1 block">Current Stock</label>
+                  <label className={`text-xs mb-1 block ${isDarkMode ? 'text-slate-400' : 'text-slate-700 font-medium'}`}>Current Stock</label>
                   <input
                     type="number"
                     value={currentStock}
                     onChange={(e) => setCurrentStock(Number(e.target.value))}
-                    className="w-full bg-[#181826] border border-[#2e2e42] rounded-lg px-3 py-2 text-xs text-white font-mono"
+                    className={`w-full rounded-lg px-3 py-2 text-xs font-mono border outline-none ${
+                      isDarkMode ? 'bg-[#181826] border-[#2e2e42] text-white' : 'bg-slate-50 border-slate-300 text-slate-900 focus:bg-white'
+                    }`}
                     required
                   />
                 </div>
 
                 <div>
-                  <label className="text-xs text-slate-400 mb-1 block">Min Alert Threshold</label>
+                  <label className={`text-xs mb-1 block ${isDarkMode ? 'text-slate-400' : 'text-slate-700 font-medium'}`}>Min Alert Threshold</label>
                   <input
                     type="number"
                     value={minThreshold}
                     onChange={(e) => setMinThreshold(Number(e.target.value))}
-                    className="w-full bg-[#181826] border border-[#2e2e42] rounded-lg px-3 py-2 text-xs text-white font-mono"
+                    className={`w-full rounded-lg px-3 py-2 text-xs font-mono border outline-none ${
+                      isDarkMode ? 'bg-[#181826] border-[#2e2e42] text-white' : 'bg-slate-50 border-slate-300 text-slate-900 focus:bg-white'
+                    }`}
                     required
                   />
                 </div>
               </div>
 
               <div>
-                <label className="text-xs text-slate-400 mb-1 block">Storage Location</label>
+                <label className={`text-xs mb-1 block ${isDarkMode ? 'text-slate-400' : 'text-slate-700 font-medium'}`}>Storage Location</label>
                 <input
                   type="text"
                   value={location}
                   onChange={(e) => setLocation(e.target.value)}
-                  className="w-full bg-[#181826] border border-[#2e2e42] rounded-lg px-3 py-2 text-xs text-white"
+                  className={`w-full rounded-lg px-3 py-2 text-xs border outline-none ${
+                    isDarkMode ? 'bg-[#181826] border-[#2e2e42] text-white' : 'bg-slate-50 border-slate-300 text-slate-900 focus:bg-white'
+                  }`}
                 />
               </div>
 
@@ -333,7 +369,7 @@ export const InventoryManagerView: React.FC<InventoryManagerViewProps> = ({
                 <button
                   type="button"
                   onClick={() => setNewItemModal(false)}
-                  className="px-4 py-2 text-xs text-slate-400 hover:bg-[#1a1a28] rounded-xl"
+                  className={`px-4 py-2 text-xs rounded-xl ${isDarkMode ? 'text-slate-400 hover:bg-[#1a1a28]' : 'text-slate-600 hover:bg-slate-100'}`}
                 >
                   Cancel
                 </button>
