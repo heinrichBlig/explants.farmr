@@ -34,7 +34,7 @@ export const NewCultureModal: React.FC<NewCultureModalProps> = ({
   const [mediaRecipeId, setMediaRecipeId] = useState(recipes[0]?.id || 'rec-1');
   const [vesselCount, setVesselCount] = useState(4);
   const [plantletsCount, setPlantletsCount] = useState(16);
-  const [vesselType, setVesselType] = useState('500ml Vented PCT Jar');
+  const [vesselType, setVesselType] = useState('500ml Vented Jar');
   const [subcultureIntervalDays, setSubcultureIntervalDays] = useState(28);
   const [photoUrl, setPhotoUrl] = useState('https://images.unsplash.com/photo-1614594975525-e45190c55d0b?auto=format&fit=crop&w=600&q=80');
   const [notes, setNotes] = useState('Initiated under laminar flow hood. Disinfected with 10% NaOCl + 2.0ml/L PPM.');
@@ -63,7 +63,7 @@ export const NewCultureModal: React.FC<NewCultureModalProps> = ({
       nextSubcultureDate: nextDateStr,
       subcultureIntervalDays: Number(subcultureIntervalDays),
       mediaRecipeId,
-      mediaRecipeName: selRecipe ? selRecipe.name : 'PCT MS Proliferation Formula',
+      mediaRecipeName: selRecipe ? selRecipe.name : 'MS Proliferation Formula',
       stage,
       generationCount: 1,
       contaminationStatus: 'Healthy',

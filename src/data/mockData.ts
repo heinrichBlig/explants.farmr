@@ -38,13 +38,13 @@ export const INITIAL_CULTURES: Culture[] = [
     nextSubcultureDate: '2026-08-05',
     subcultureIntervalDays: 28,
     mediaRecipeId: 'rec-1',
-    mediaRecipeName: 'PCT MS + BAP 1.5 mg/L Multiplier',
+    mediaRecipeName: 'Standard MS + BAP 1.5 mg/L Multiplier',
     stage: 'Multiplication',
     generationCount: 3,
     contaminationStatus: 'Healthy',
     vesselCount: 8,
     plantletsCount: 32,
-    vesselType: '500ml Vented PCT Jar',
+    vesselType: '500ml Vented TC Jar',
     photoUrl: 'https://images.unsplash.com/photo-1614594975525-e45190c55d0b?auto=format&fit=crop&w=600&q=80',
     notes: 'Exhibiting dense multi-shoot proliferation. 4 shoots per explant average. High vigor.',
     tags: ['Variegated', 'High Value', 'PPM Protected']
@@ -84,7 +84,7 @@ export const INITIAL_CULTURES: Culture[] = [
     nextSubcultureDate: '2026-07-22', // Overdue!
     subcultureIntervalDays: 21,
     mediaRecipeId: 'rec-1',
-    mediaRecipeName: 'PCT MS + BAP 1.5 mg/L Multiplier',
+    mediaRecipeName: 'Standard MS + BAP 1.5 mg/L Multiplier',
     stage: 'Initiation',
     generationCount: 1,
     contaminationStatus: 'Healthy',
@@ -153,13 +153,13 @@ export const INITIAL_CULTURES: Culture[] = [
     nextSubcultureDate: '2026-08-15',
     subcultureIntervalDays: 28,
     mediaRecipeId: 'rec-1',
-    mediaRecipeName: 'PCT MS + BAP 1.5 mg/L Multiplier',
+    mediaRecipeName: 'MS + BAP 1.5 mg/L Multiplier',
     stage: 'Multiplication',
     generationCount: 2,
     contaminationStatus: 'Healthy',
     vesselCount: 6,
     plantletsCount: 18,
-    vesselType: '500ml Vented PCT Jar',
+    vesselType: '500ml Vented Jar',
     photoUrl: 'https://images.unsplash.com/photo-1604762524889-3e2fcc145683?auto=format&fit=crop&w=600&q=80',
     notes: 'Callus formation at petiole base producing multiple direct organogenesis shoots.',
     tags: ['Aroid', 'Callus Proliferation']
@@ -193,7 +193,7 @@ export const INITIAL_RECIPES: MediaRecipe[] = [
   {
     id: 'rec-1',
     labId: 'lab-main',
-    name: 'PCT MS + BAP 1.5 mg/L Proliferation Formula',
+    name: 'MS + BAP 1.5 mg/L Proliferation Formula',
     description: 'Gold-standard multiplication protocol for Monstera, Philodendron, and Anthurium species.',
     baseMedium: 'MS',
     baseStrength: 'Full',
@@ -208,11 +208,8 @@ export const INITIAL_RECIPES: MediaRecipe[] = [
     ],
     targetSpecies: 'Monstera, Philodendron, Syngonium',
     difficulty: 'Intermediate',
-    pctRecommended: true,
-    pctProductCode: 'PCT-MS-KIT-01',
-    pctBuyUrl: 'https://plantcelltechnology.com/products/ppm-plant-preservative-mixture',
     notes: 'Autoclave MS salts + sucrose + gelling agent at 121°C for 15 mins. Add PPM and heat-labile PGRs after cooling to 55°C.',
-    author: 'Plant Cell Technology Research Lab',
+    author: 'tissue.farmr Research Lab',
     isFavorite: true
   },
   {
@@ -233,11 +230,8 @@ export const INITIAL_RECIPES: MediaRecipe[] = [
     ],
     targetSpecies: 'Vaccinium (Blueberry), Kalmia, Rhododendron, Ficus',
     difficulty: 'Advanced',
-    pctRecommended: true,
-    pctProductCode: 'PCT-WPM-50L',
-    pctBuyUrl: 'https://plantcelltechnology.com/',
     notes: 'Adjust pH precisely to 5.2 before autoclaving to avoid agar hydrolysis.',
-    author: 'PCT Masterclass Protocol',
+    author: 'Masterclass Protocol',
     isFavorite: true
   },
   {
@@ -257,11 +251,8 @@ export const INITIAL_RECIPES: MediaRecipe[] = [
     ],
     targetSpecies: 'Dionaea muscipula, Drosera, Pinguicula',
     difficulty: 'Beginner',
-    pctRecommended: true,
-    pctProductCode: 'PCT-CARNIVORE-SET',
-    pctBuyUrl: 'https://plantcelltechnology.com/',
     notes: 'High PPM concentration (2.0 ml/L) is crucial for Stage I explants taken from non-sterile greenhouse traps.',
-    author: 'Dr. Francisco Palacios (PCT)',
+    author: 'Dr. Francisco Palacios',
     isFavorite: true
   },
   {
@@ -282,7 +273,6 @@ export const INITIAL_RECIPES: MediaRecipe[] = [
     ],
     targetSpecies: 'General Exotics & Hardwood Clones',
     difficulty: 'Intermediate',
-    pctRecommended: false,
     author: 'tissue.farmr Community',
     isFavorite: false
   },
@@ -301,11 +291,8 @@ export const INITIAL_RECIPES: MediaRecipe[] = [
     pgrs: [],
     targetSpecies: 'Phalaenopsis, Cattleya, Dendrobium, Paphiopedilum',
     difficulty: 'Commercial',
-    pctRecommended: true,
-    pctProductCode: 'PCT-ORCHID-NN',
-    pctBuyUrl: 'https://plantcelltechnology.com/',
     notes: 'Add 50g/L organic banana homogenate and 100ml/L filter-sterilized coconut water.',
-    author: 'PCT Orchid Lab',
+    author: 'Orchid TC Lab',
     isFavorite: true
   }
 ];
@@ -321,9 +308,6 @@ export const INITIAL_INVENTORY: InventoryItem[] = [
     minThreshold: 25,
     costEstimateUSD: 34.99,
     location: 'Reagents Fridge A (4°C)',
-    pctProductCode: 'PPM-100ML',
-    pctBuyUrl: 'https://plantcelltechnology.com/products/ppm-plant-preservative-mixture',
-    isPctProduct: true,
     lastRestocked: '2026-05-15'
   },
   {
@@ -336,9 +320,6 @@ export const INITIAL_INVENTORY: InventoryItem[] = [
     minThreshold: 2,
     costEstimateUSD: 28.50,
     location: 'Dry Storage Shelf 1',
-    pctProductCode: 'PCT-MS-50L',
-    pctBuyUrl: 'https://plantcelltechnology.com/',
-    isPctProduct: true,
     lastRestocked: '2026-06-01'
   },
   {
@@ -351,9 +332,6 @@ export const INITIAL_INVENTORY: InventoryItem[] = [
     minThreshold: 100, // Low stock alert!
     costEstimateUSD: 42.00,
     location: 'Dry Storage Shelf 2',
-    pctProductCode: 'PCT-GEL-250',
-    pctBuyUrl: 'https://plantcelltechnology.com/',
-    isPctProduct: true,
     lastRestocked: '2026-04-20'
   },
   {
@@ -366,9 +344,6 @@ export const INITIAL_INVENTORY: InventoryItem[] = [
     minThreshold: 15,
     costEstimateUSD: 18.00,
     location: 'Reagents Freezer B (-20°C)',
-    pctProductCode: 'PCT-PGR-BAP',
-    pctBuyUrl: 'https://plantcelltechnology.com/',
-    isPctProduct: true,
     lastRestocked: '2026-06-12'
   },
   {
@@ -381,9 +356,6 @@ export const INITIAL_INVENTORY: InventoryItem[] = [
     minThreshold: 10,
     costEstimateUSD: 16.50,
     location: 'Reagents Freezer B (-20°C)',
-    pctProductCode: 'PCT-PGR-NAA',
-    pctBuyUrl: 'https://plantcelltechnology.com/',
-    isPctProduct: true,
     lastRestocked: '2026-06-12'
   },
   {
@@ -396,9 +368,6 @@ export const INITIAL_INVENTORY: InventoryItem[] = [
     minThreshold: 5,
     costEstimateUSD: 48.00,
     location: 'Sterile Supply Bin 4',
-    pctProductCode: 'PCT-JAR-500',
-    pctBuyUrl: 'https://plantcelltechnology.com/',
-    isPctProduct: true,
     lastRestocked: '2026-05-30'
   },
   {
@@ -411,9 +380,6 @@ export const INITIAL_INVENTORY: InventoryItem[] = [
     minThreshold: 2,
     costEstimateUSD: 120.00,
     location: 'Bench Alpha Shelf',
-    pctProductCode: 'PCT-BIOTILT-01',
-    pctBuyUrl: 'https://plantcelltechnology.com/',
-    isPctProduct: true,
     lastRestocked: '2026-06-25'
   },
   {
@@ -426,8 +392,6 @@ export const INITIAL_INVENTORY: InventoryItem[] = [
     minThreshold: 500,
     costEstimateUSD: 12.00,
     location: 'Dry Storage Shelf 1',
-    pctBuyUrl: 'https://plantcelltechnology.com/',
-    isPctProduct: false,
     lastRestocked: '2026-07-01'
   }
 ];
@@ -460,7 +424,7 @@ export const INITIAL_CONTAMINATION_LOGS: ContaminationEvent[] = [
     suspectedCause: 'Airborne spore during flow hood transfer on high humidity day',
     ppmUsed: true,
     ppmConcentrationMlL: 1.0,
-    vesselType: '500ml Vented PCT Jar',
+    vesselType: '500ml Vented Jar',
     actionTaken: 'Autoclaved',
     notes: 'White fuzzy mycelium detected at edge of agar on day 8. Autoclaved vessel immediately before disposal.'
   },
@@ -504,7 +468,7 @@ export const INITIAL_KNOWLEDGE_BASE: KnowledgeArticle[] = [
     skillLevel: 'Beginner',
     readTimeMinutes: 8,
     summary: 'How PPM prevents endophytes, bacteria, and fungal spores without inhibiting plantlet tissue growth or organogenesis.',
-    content: `Plant Preservative Mixture (PPM™) is a heat-stable broad-spectrum biocide formulated by Plant Cell Technology. It targets membrane permeability and enzyme synthesis in bacterial and fungal contaminant cells while leaving plant cells undamaged.
+    content: `Plant Preservative Mixture (PPM™) is a heat-stable broad-spectrum biocide used in tissue culture. It targets membrane permeability and enzyme synthesis in bacterial and fungal contaminant cells while leaving plant cells undamaged.
 
 ### Recommended Dosages
 - **Stage I Initiation (Field explants):** 2.0 - 3.0 ml / L of media.
@@ -515,10 +479,8 @@ export const INITIAL_KNOWLEDGE_BASE: KnowledgeArticle[] = [
 1. PPM can be autoclaved directly in media at 121°C (15 psi) for up to 20 minutes without loss of potency.
 2. Maintain media pH between 5.5 and 5.8 for optimal PPM ion activity.
 3. Combine PPM with 0.1% Tween-20 during explant surface wash to break surface tension on hairy or waxy leaves.`,
-    videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ', // Placeholder or PCT video link
-    pctProductTags: ['PPM™ 100ml', 'PPM™ 500ml', 'Sterile Tween-20'],
-    pctArticleUrl: 'https://plantcelltechnology.com/blogs/news',
-    author: 'Dr. Francisco Palacios (PCT Chief Scientist)'
+    reagentTags: ['PPM™ 100ml', 'PPM™ 500ml', 'Sterile Tween-20'],
+    author: 'Dr. Francisco Palacios (Chief Scientist)'
   },
   {
     id: 'kb-2',
@@ -535,9 +497,8 @@ export const INITIAL_KNOWLEDGE_BASE: KnowledgeArticle[] = [
 3. **Sterilization:** 10% Household Bleach (0.6% NaOCl) + 2 drops Tween-20 for 12 minutes, followed by 3x sterile water rinses.
 4. **Initiation Medium:** Full MS salts + 30g/L Sucrose + 1.5ml/L PPM + 1.0 mg/L BAP + 0.1 mg/L NAA.
 5. **Subculture Cycle:** Every 21-28 days. Proliferation index expected: 3x to 5x shoots per subculture cycle.`,
-    pctProductTags: ['MS Media Pack', 'BAP Cytokinin', 'Ascorbic Acid', 'PCT Vented Jars'],
-    pctArticleUrl: 'https://plantcelltechnology.com/blogs/news',
-    author: 'PCT Masterclass Series'
+    reagentTags: ['MS Media Pack', 'BAP Cytokinin', 'Ascorbic Acid', 'Vented Jars'],
+    author: 'Masterclass Series'
   },
   {
     id: 'kb-3',
@@ -553,9 +514,8 @@ export const INITIAL_KNOWLEDGE_BASE: KnowledgeArticle[] = [
 - **Sugar:** Limit sucrose to 15g - 20g/L.
 - **PGR Balance:** Keep BAP or Kinetin ≤ 0.5 mg/L. High cytokinins trigger hyperhydricity rapidly in Sundews and Venus Flytraps.
 - **Gelling Density:** Increase Gelrite to 2.5g/L or Agar to 7.5g/L to reduce free water availability on media surface.`,
-    pctProductTags: ['1/2 MS Media', 'Gellan Gum Gelrite', 'Kinetin'],
-    pctArticleUrl: 'https://plantcelltechnology.com/blogs/news',
-    author: 'Plant Cell Technology Research'
+    reagentTags: ['1/2 MS Media', 'Gellan Gum Gelrite', 'Kinetin'],
+    author: 'Tissue Culture Research'
   },
   {
     id: 'kb-4',
@@ -571,8 +531,7 @@ export const INITIAL_KNOWLEDGE_BASE: KnowledgeArticle[] = [
 - Zero gelling agent cost (saves $400+ per 1000 vessels).
 - Drastically reduced subculture handling time.
 - Ideal for Blueberry, Orchid, Cannabis, and Banana commercial lines.`,
-    pctProductTags: ['BioTilt™ Bioreactor', 'Liquid MS Medium', 'Sintered Air Filters'],
-    pctArticleUrl: 'https://plantcelltechnology.com/',
+    reagentTags: ['BioTilt™ Bioreactor', 'Liquid MS Medium', 'Sintered Air Filters'],
     author: 'Commercial TC Engineering Team'
   },
   {
@@ -593,9 +552,8 @@ export const INITIAL_KNOWLEDGE_BASE: KnowledgeArticle[] = [
 ### Problem 3: Pale Yellow / Chlorotic Young Leaves
 - **Cause:** Iron deficiency or incorrect pH (pH > 6.0).
 - **Solution:** Re-check pH meter calibration. Ensure Fe-EDTA or Fe-EDDHA iron source is fresh and protected from light.`,
-    pctProductTags: ['Activated Charcoal', 'PPM™ 100ml', 'Fe-EDTA Iron', 'pH Buffer Solutions'],
-    pctArticleUrl: 'https://plantcelltechnology.com/',
-    author: 'PCT Technical Support'
+    reagentTags: ['Activated Charcoal', 'PPM™ 100ml', 'Fe-EDTA Iron', 'pH Buffer Solutions'],
+    author: 'Technical Support'
   }
 ];
 
@@ -610,7 +568,7 @@ export const PRICING_TIERS: PricingTier[] = [
       'Basic Culture Tracker & Stages',
       'Media Recipe Builder with Auto-Scale',
       'Local Storage Persistence',
-      'PCT Knowledge Base Access',
+      'Knowledge Base Access',
       'Community Recipe Library'
     ],
     ctaText: 'Current Plan'
@@ -627,7 +585,6 @@ export const PRICING_TIERS: PricingTier[] = [
       'Inventory Manager with Low Stock Alerts',
       'Subculture Schedule Calendar View',
       'Contamination Log & Analytics',
-      '1-Click PCT Restock Referral Discounts',
       'CSV / JSON Full Data Backup Export'
     ],
     highlighted: true,
@@ -645,7 +602,7 @@ export const PRICING_TIERS: PricingTier[] = [
       'Advanced Contamination Rate Reduction Charts',
       'Batch Subculture Actions',
       'BioTilt™ Bioreactor Schedule Tracking',
-      'Priority PCT Technical Support & Protocol Advice'
+      'Priority Technical Support & Protocol Advice'
     ],
     ctaText: 'Upgrade to Pro'
   },
@@ -659,22 +616,8 @@ export const PRICING_TIERS: PricingTier[] = [
       'Everything in Pro',
       'Team Member Role Simulation',
       'Custom API & QR Code Label Generator',
-      'Dedicated PCT Masterclass Consultation'
+      'Dedicated Masterclass Consultation'
     ],
     ctaText: 'Contact Enterprise Sales'
-  },
-  {
-    id: 'pct_partner',
-    name: 'PCT Partner Tier',
-    priceMonthly: 'FREE forever',
-    cultureLimit: 'Unlimited Everything',
-    recipeLimit: 'Unlimited Everything',
-    features: [
-      'Completely Free for Plant Cell Technology Team & Certified Labs',
-      'Co-branded Dashboard Experience',
-      'Earn 10-15% Affiliate Commission on Referred Product Sales',
-      'Direct Protocol Publishing to Community Library'
-    ],
-    ctaText: 'PCT Partner Access'
   }
 ];

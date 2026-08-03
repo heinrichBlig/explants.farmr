@@ -3,7 +3,6 @@ import {
   GraduationCap, 
   BookOpen, 
   Search, 
-  ExternalLink, 
   ShieldCheck, 
   HelpCircle, 
   ChevronRight, 
@@ -12,7 +11,6 @@ import {
 } from 'lucide-react';
 import { KnowledgeArticle } from '../types';
 import { INITIAL_KNOWLEDGE_BASE } from '../data/mockData';
-import { recordPctAffiliateClick } from '../services/storage';
 
 interface KnowledgeBaseViewProps {
   isDarkMode?: boolean;
@@ -32,34 +30,30 @@ export const KnowledgeBaseView: React.FC<KnowledgeBaseViewProps> = ({ isDarkMode
     return matchesSkill && matchesSearch;
   });
 
-  const diagnosticGuides: Record<string, { problem: string; cause: string; solution: string; pctProduct: string; pctUrl: string }> = {
+  const diagnosticGuides: Record<string, { problem: string; cause: string; solution: string; product: string }> = {
     browning: {
       problem: 'Black / Brown Exudate in Media',
       cause: 'Phenolic oxidation released by explant cut vascular tissues during Stage I initiation.',
       solution: 'Soak explants in 150 mg/L Ascorbic Acid + 100 mg/L Citric Acid antioxidant bath for 30 mins before plating. Add 2.0 g/L Activated Charcoal to media.',
-      pctProduct: 'PCT Activated Charcoal & Antioxidant Pack',
-      pctUrl: 'https://plantcelltechnology.com/'
+      product: 'Activated Charcoal & Antioxidant Bath'
     },
     cloudiness: {
       problem: 'White / Milky Cloudiness Around Explant Base',
       cause: 'Bacterial contamination or latent vascular endophytic bacteria emerging.',
-      solution: 'Dip explant in 5% PPM™ biocide bath for 15 minutes. Subculture onto media fortified with 2.0 - 3.0 ml/L PPM™.',
-      pctProduct: 'Plant Preservative Mixture (PPM™) 100ml',
-      pctUrl: 'https://plantcelltechnology.com/products/ppm-plant-preservative-mixture'
+      solution: 'Dip explant in 5% biocide bath for 15 minutes. Subculture onto media fortified with 2.0 - 3.0 ml/L biocide.',
+      product: 'Tissue Culture Preservative Mixture'
     },
     vitrification: {
       problem: 'Translucent, Glassy, Water-Soaked Leaves (Hyperhydricity)',
       cause: 'Excess free water on media surface, high relative humidity, or excessive cytokinin (BAP/TDZ) concentration.',
       solution: 'Increase gelling agent density (Gelrite to 2.5g/L or Agar to 8g/L). Lower cytokinin concentration by 50%. Ensure vessel vented lid airflow.',
-      pctProduct: 'High Clarity Gellan Gum (Gelrite) 250g',
-      pctUrl: 'https://plantcelltechnology.com/'
+      product: 'High Clarity Gellan Gum (Gelrite)'
     },
     noshoots: {
       problem: 'Explant Alive but No Axillary Shoot Proliferation',
       cause: 'Sub-optimal Cytokinin-to-Auxin ratio or apical dominance inhibition.',
       solution: 'Increase BAP concentration (e.g. from 0.5 mg/L to 1.5 mg/L). Decapitate apical shoot tip to release axillary bud growth.',
-      pctProduct: 'BAP (6-Benzylaminopurine) Stock Solution',
-      pctUrl: 'https://plantcelltechnology.com/'
+      product: 'BAP (6-Benzylaminopurine) Stock Solution'
     }
   };
 
@@ -74,21 +68,12 @@ export const KnowledgeBaseView: React.FC<KnowledgeBaseViewProps> = ({ isDarkMode
         <div>
           <h2 className={`text-lg font-extrabold tracking-tight flex items-center gap-2 ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>
             <GraduationCap className="w-5 h-5 text-[#9d4edd]" />
-            Plant Cell Technology Knowledge Hub & Masterclasses
+            Tissue Culture Knowledge Hub & Masterclasses
           </h2>
           <p className={`text-xs ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}`}>
-            Educational protocols, video masterclasses, sterilization guides, and diagnostic troubleshooting powered by PCT.
+            Educational protocols, video masterclasses, sterilization guides, and diagnostic troubleshooting.
           </p>
         </div>
-
-        <button
-          onClick={() => recordPctAffiliateClick('Knowledge Base PCT Learning Hub')}
-          className="bg-[#7b2cbf] hover:bg-[#9d4edd] text-white text-xs font-bold px-4 py-2.5 rounded-xl transition-all shadow-md shadow-[#7b2cbf]/20 flex items-center gap-1.5 shrink-0"
-        >
-          <Sparkles className="w-4 h-4" />
-          <span>Explore PCT Learning Hub</span>
-          <ExternalLink className="w-3.5 h-3.5" />
-        </button>
       </div>
 
       {/* Interactive Tissue Culture Diagnostic Assistant */}
@@ -129,7 +114,7 @@ export const KnowledgeBaseView: React.FC<KnowledgeBaseViewProps> = ({ isDarkMode
             </div>
           </div>
 
-          <div className={`p-4 rounded-xl space-y-3 border ${
+          <div className={`p-4 rounded-xl space-y-3 border col-span-2 ${
             isDarkMode ? 'bg-[#12121e] border-[#2e2e46]' : 'bg-white border-purple-200 shadow-xs'
           }`}>
             <div className={`flex items-center justify-between pb-2 border-b ${
@@ -139,7 +124,7 @@ export const KnowledgeBaseView: React.FC<KnowledgeBaseViewProps> = ({ isDarkMode
                 Diagnosis & Solution
               </span>
               <span className="text-[10px] bg-emerald-500/10 text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-300 border border-emerald-500/30 px-2 py-0.5 rounded font-mono">
-                PCT Verified Protocol
+                Verified Protocol
               </span>
             </div>
 
@@ -159,15 +144,8 @@ export const KnowledgeBaseView: React.FC<KnowledgeBaseViewProps> = ({ isDarkMode
               isDarkMode ? 'border-[#252538]' : 'border-purple-100'
             }`}>
               <span className={`text-xs font-medium ${isDarkMode ? 'text-slate-300' : 'text-slate-700'}`}>
-                Recommended Fix: <strong className={isDarkMode ? 'text-white' : 'text-slate-900'}>{currentDiagnostic.pctProduct}</strong>
+                Recommended Action: <strong className={isDarkMode ? 'text-white' : 'text-slate-900'}>{currentDiagnostic.product}</strong>
               </span>
-              <button
-                onClick={() => recordPctAffiliateClick(currentDiagnostic.pctProduct, currentDiagnostic.pctUrl)}
-                className="bg-[#7b2cbf] hover:bg-[#9d4edd] text-white text-xs font-bold px-3 py-1.5 rounded-lg flex items-center gap-1"
-              >
-                <span>Buy Solution</span>
-                <ExternalLink className="w-3 h-3" />
-              </button>
             </div>
           </div>
         </div>
@@ -180,7 +158,7 @@ export const KnowledgeBaseView: React.FC<KnowledgeBaseViewProps> = ({ isDarkMode
           <div className={`flex items-center justify-between p-3 rounded-xl border ${
             isDarkMode ? 'bg-[#11111a] border-[#222232]' : 'bg-white border-slate-200 shadow-xs'
           }`}>
-            <span className={`text-xs font-bold ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>PCT Articles ({filteredArticles.length})</span>
+            <span className={`text-xs font-bold ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>Articles ({filteredArticles.length})</span>
             <div className="relative w-40">
               <input
                 type="text"
@@ -239,16 +217,6 @@ export const KnowledgeBaseView: React.FC<KnowledgeBaseViewProps> = ({ isDarkMode
                   </div>
                   <h2 className={`text-lg font-bold ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>{selectedArticle.title}</h2>
                 </div>
-
-                <button
-                  onClick={() => recordPctAffiliateClick(selectedArticle.title, selectedArticle.pctArticleUrl)}
-                  className={`text-xs font-medium px-3 py-1.5 rounded-xl flex items-center gap-1 shrink-0 border ${
-                    isDarkMode ? 'bg-[#181826] hover:bg-[#222238] border-[#2e2e42] text-slate-200' : 'bg-slate-100 hover:bg-slate-200 border-slate-300 text-slate-700'
-                  }`}
-                >
-                  <span>PCT Source</span>
-                  <ExternalLink className="w-3.5 h-3.5" />
-                </button>
               </div>
 
               {/* Content Body */}
@@ -259,32 +227,32 @@ export const KnowledgeBaseView: React.FC<KnowledgeBaseViewProps> = ({ isDarkMode
               </div>
 
               {/* Tagged Reagents */}
-              <div className={`p-4 rounded-xl border space-y-2 pt-3 ${
-                isDarkMode ? 'bg-[#161624] border-[#222234]' : 'bg-slate-50 border-slate-200'
-              }`}>
-                <span className={`text-xs font-bold uppercase font-mono tracking-wider block ${
-                  isDarkMode ? 'text-[#c77dff]' : 'text-[#7b2cbf]'
+              {selectedArticle.reagentTags && selectedArticle.reagentTags.length > 0 && (
+                <div className={`p-4 rounded-xl border space-y-2 pt-3 ${
+                  isDarkMode ? 'bg-[#161624] border-[#222234]' : 'bg-slate-50 border-slate-200'
                 }`}>
-                  Reagents Used in This Protocol:
-                </span>
-                <div className="flex flex-wrap gap-2">
-                  {selectedArticle.pctProductTags.map((tag) => (
-                    <button
-                      key={tag}
-                      onClick={() => recordPctAffiliateClick(tag)}
-                      className={`text-xs px-3 py-1 rounded-lg flex items-center gap-1 font-medium transition-colors border ${
-                        isDarkMode 
-                          ? 'bg-[#1e1e32] hover:bg-[#2a2a46] border-[#363654] text-slate-200' 
-                          : 'bg-white hover:bg-slate-100 border-slate-300 text-slate-800'
-                      }`}
-                    >
-                      <ShieldCheck className="w-3.5 h-3.5 text-emerald-500" />
-                      <span>{tag}</span>
-                      <ExternalLink className={`w-3 h-3 ml-1 ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`} />
-                    </button>
-                  ))}
+                  <span className={`text-xs font-bold uppercase font-mono tracking-wider block ${
+                    isDarkMode ? 'text-[#c77dff]' : 'text-[#7b2cbf]'
+                  }`}>
+                    Reagents Used in This Protocol:
+                  </span>
+                  <div className="flex flex-wrap gap-2">
+                    {selectedArticle.reagentTags.map((tag) => (
+                      <span
+                        key={tag}
+                        className={`text-xs px-3 py-1 rounded-lg flex items-center gap-1 font-medium transition-colors border ${
+                          isDarkMode 
+                            ? 'bg-[#1e1e32] border-[#363654] text-slate-200' 
+                            : 'bg-white border-slate-300 text-slate-800'
+                        }`}
+                      >
+                        <ShieldCheck className="w-3.5 h-3.5 text-emerald-500" />
+                        <span>{tag}</span>
+                      </span>
+                    ))}
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
           ) : (
             <div className={`py-12 text-center text-xs ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>Select an article from the left list.</div>

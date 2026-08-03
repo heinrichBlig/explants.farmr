@@ -4,7 +4,6 @@ import {
   Bell, 
   Plus, 
   ShieldAlert, 
-  ExternalLink, 
   Building2, 
   Sparkles,
   Download,
@@ -12,7 +11,6 @@ import {
   Menu
 } from 'lucide-react';
 import { Lab, Culture, InventoryItem } from '../types';
-import { recordPctAffiliateClick } from '../services/storage';
 
 interface HeaderProps {
   currentTabLabel: string;
@@ -87,20 +85,6 @@ export const Header: React.FC<HeaderProps> = ({
             }`}
           />
         </div>
-
-        {/* PCT Shop Link */}
-        <button
-          onClick={() => recordPctAffiliateClick('Header PPM Store Link')}
-          className={`hidden lg:flex items-center gap-1.5 border px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
-            isDarkMode 
-              ? 'bg-gradient-to-r from-purple-900/40 to-[#7b2cbf]/30 hover:from-purple-900/60 hover:to-[#7b2cbf]/50 border-[#7b2cbf]/40 text-[#c77dff]' 
-              : 'bg-purple-50 hover:bg-purple-100 border-purple-300 text-purple-900 font-bold shadow-xs'
-          }`}
-        >
-          <Sparkles className="w-3.5 h-3.5 text-purple-600" />
-          <span>PCT Store</span>
-          <ExternalLink className="w-3 h-3" />
-        </button>
 
         {/* Notification Bell Dropdown */}
         <div className="relative">

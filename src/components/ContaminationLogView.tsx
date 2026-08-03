@@ -3,7 +3,6 @@ import {
   Biohazard, 
   Plus, 
   ShieldCheck, 
-  ExternalLink, 
   AlertTriangle, 
   Trash2, 
   Info, 
@@ -13,7 +12,7 @@ import {
   X
 } from 'lucide-react';
 import { ContaminationEvent, ContaminationType, Culture } from '../types';
-import { saveContaminationLog, recordPctAffiliateClick } from '../services/storage';
+import { saveContaminationLog } from '../services/storage';
 
 interface ContaminationLogViewProps {
   contaminationLogs: ContaminationEvent[];
@@ -98,7 +97,7 @@ export const ContaminationLogView: React.FC<ContaminationLogViewProps> = ({
         </button>
       </div>
 
-      {/* PCT PPM Biocide Rescue Banner */}
+      {/* Biocide Rescue Banner */}
       <div className={`p-5 rounded-2xl flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border ${
         isDarkMode 
           ? 'bg-gradient-to-r from-[#1c1228] via-[#241338] to-[#120f20] border-[#7b2cbf]/40' 
@@ -112,22 +111,13 @@ export const ContaminationLogView: React.FC<ContaminationLogViewProps> = ({
           </div>
           <div>
             <h3 className={`text-sm font-bold flex items-center gap-2 ${isDarkMode ? 'text-white' : 'text-purple-950'}`}>
-              Plant Cell Technology PPM™ Rescue Bath Protocol
+              Biocide Rescue Bath Protocol
             </h3>
             <p className={`text-xs ${isDarkMode ? 'text-slate-300' : 'text-purple-800'}`}>
-              Recover valuable rare culture explants infected with surface bacteria or fungal spores using a 5% PPM™ soak for 15 minutes.
+              Recover valuable rare culture explants infected with surface bacteria or fungal spores using a 5% biocide soak for 15 minutes.
             </p>
           </div>
         </div>
-
-        <button
-          onClick={() => recordPctAffiliateClick('Contamination PPM Rescue Button')}
-          className="bg-[#7b2cbf] hover:bg-[#9d4edd] text-white text-xs font-bold px-4 py-2.5 rounded-xl transition-all shadow-md shadow-[#7b2cbf]/30 flex items-center gap-1.5 shrink-0"
-        >
-          <Sparkles className="w-4 h-4" />
-          <span>Order PPM™ Rescue Kit</span>
-          <ExternalLink className="w-3.5 h-3.5" />
-        </button>
       </div>
 
       {/* Incident List */}

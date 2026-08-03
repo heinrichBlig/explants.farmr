@@ -20,7 +20,6 @@ import {
   X
 } from 'lucide-react';
 import { Lab } from '../types';
-import { recordPctAffiliateClick } from '../services/storage';
 
 interface SidebarProps {
   currentTab: string;
@@ -195,43 +194,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
         </nav>
       </div>
 
-      {/* Footer & Plant Cell Technology Partnership Banner */}
-      <div className={`p-3 border-t ${isDarkMode ? 'border-[#222232]' : 'border-slate-200'} space-y-2`}>
-        {/* PCT Official Partner Card */}
-        <div 
-          onClick={() => recordPctAffiliateClick('PCT Sidebar Promo')}
-          className={`border p-2.5 rounded-xl transition-all cursor-pointer group shadow-xs ${
-            isDarkMode
-              ? 'bg-gradient-to-br from-[#181828] to-[#12121d] border-[#332252] hover:border-[#7b2cbf]'
-              : 'bg-gradient-to-br from-purple-50/80 to-indigo-50/60 border-purple-200 hover:border-purple-400'
-          }`}
-        >
-          <div className="flex items-center justify-between mb-1">
-            <div className="flex items-center gap-1.5">
-              <ShieldCheck className={`w-3.5 h-3.5 ${isDarkMode ? 'text-[#c77dff]' : 'text-purple-700'}`} />
-              <span className={`text-[11px] font-semibold tracking-tight ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>Plant Cell Tech</span>
-            </div>
-            <span className={`text-[9px] px-1.5 py-0.5 rounded-md font-mono font-medium ${
-              isDarkMode 
-                ? 'bg-[#7b2cbf]/30 text-[#c77dff] border border-[#7b2cbf]/40' 
-                : 'bg-purple-200 text-purple-900 border border-purple-300'
-            }`}>PARTNER</span>
-          </div>
-          <p className={`text-[10px] leading-tight mb-2 ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}`}>
-            Official PPM™, media, PGRs & BioTilt™ bioreactor supplies.
-          </p>
-          <div className={`flex items-center justify-between text-[10px] font-medium transition-colors ${
-            isDarkMode 
-              ? 'text-[#c77dff] group-hover:text-white' 
-              : 'text-purple-700 group-hover:text-purple-900 font-bold'
-          }`}>
-            <span>Shop Reagents</span>
-            <ExternalLink className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
-          </div>
-        </div>
-
+      {/* Footer & Version */}
+      <div className={`p-3 border-t ${isDarkMode ? 'border-[#222232]' : 'border-slate-200'}`}>
         {/* Theme Toggle & Version */}
-        <div className={`flex items-center justify-between text-xs px-1 pt-1 ${isDarkMode ? 'text-slate-500' : 'text-slate-500'}`}>
+        <div className={`flex items-center justify-between text-xs px-1 ${isDarkMode ? 'text-slate-500' : 'text-slate-500'}`}>
           <span className="font-mono text-[10px]">v1.0.4 • explants.farmr</span>
           <button
             onClick={() => setIsDarkMode(!isDarkMode)}

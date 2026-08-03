@@ -104,9 +104,9 @@ export default function App() {
     library: 'Recipe & Protocol Library',
     inventory: 'Inventory Manager',
     contamination: 'Contamination Log',
-    knowledge: 'PCT Knowledge Base',
+    knowledge: 'Knowledge Base & Guides',
     multilab: 'Multi-Lab Workspaces',
-    settings: 'Settings & Coolify Export'
+    settings: 'Settings & Data Backup'
   };
 
   return (

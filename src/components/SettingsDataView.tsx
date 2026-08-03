@@ -4,15 +4,8 @@ import {
   Download, 
   Upload, 
   RotateCcw, 
-  DollarSign, 
-  ShieldCheck, 
-  ExternalLink, 
   Sparkles, 
-  Terminal, 
-  Copy, 
-  Check, 
   CheckCircle2, 
-  Layers,
   FileSpreadsheet
 } from 'lucide-react';
 import { 
@@ -21,8 +14,7 @@ import {
   downloadCSV, 
   importDataJSON, 
   resetStorageToDemoData, 
-  clearAllStorage, 
-  getAffiliateStats 
+  clearAllStorage 
 } from '../services/storage';
 import { PRICING_TIERS } from '../data/mockData';
 
@@ -37,8 +29,6 @@ export const SettingsDataView: React.FC<SettingsDataViewProps> = ({
 }) => {
   const [importJsonText, setImportJsonText] = useState('');
   const [importStatus, setImportStatus] = useState<string | null>(null);
-
-  const affiliateStats = getAffiliateStats();
 
   const handleExportJSON = () => {
     const jsonStr = exportAllDataJSON();
@@ -82,64 +72,11 @@ export const SettingsDataView: React.FC<SettingsDataViewProps> = ({
         <div>
           <h2 className={`text-lg font-extrabold tracking-tight flex items-center gap-2 ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>
             <Settings className="w-5 h-5 text-[#9d4edd]" />
-            Data Backup & PCT Partner Settings
+            Data Backup & Settings
           </h2>
           <p className={`text-xs ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}`}>
-            Export client-side backups as CSV/JSON and review PCT affiliate revenue.
+            Export client-side backups as CSV/JSON and manage app configuration.
           </p>
-        </div>
-      </div>
-
-      {/* PCT Affiliate Revenue Dashboard Simulator */}
-      <div className={`p-6 rounded-2xl space-y-4 border ${
-        isDarkMode 
-          ? 'bg-gradient-to-r from-[#1b122e] via-[#24133c] to-[#140f24] border-[#7b2cbf]/40' 
-          : 'bg-purple-50/70 border-purple-200'
-      }`}>
-        <div className={`flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b ${
-          isDarkMode ? 'border-[#7b2cbf]/30' : 'border-purple-200'
-        }`}>
-          <div>
-            <div className="flex items-center gap-2 mb-1">
-              <span className="bg-[#7b2cbf] text-white text-[10px] font-mono font-bold px-2 py-0.5 rounded">
-                PCT AFFILIATE PROGRAM
-              </span>
-              <span className={`text-xs font-semibold flex items-center gap-1 ${isDarkMode ? 'text-slate-300' : 'text-slate-700'}`}>
-                <ShieldCheck className="w-3.5 h-3.5 text-emerald-500" /> Plant Cell Technology Referral Network
-              </span>
-            </div>
-            <h3 className={`text-base font-bold ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>Referred Product Sales & Commission Earnings</h3>
-          </div>
-
-          <div className="text-right">
-            <div className={`text-2xl font-black font-mono ${isDarkMode ? 'text-emerald-400' : 'text-emerald-600'}`}>
-              ${affiliateStats.commissionEarnedUSD.toFixed(2)}
-            </div>
-            <div className={`text-[10px] font-mono uppercase ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>15% Commission Earned</div>
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <div className={`p-3.5 rounded-xl border ${
-            isDarkMode ? 'bg-[#141422] border-[#222236]' : 'bg-white border-purple-200 shadow-xs'
-          }`}>
-            <span className={`text-xs block mb-1 ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>Total PCT Link Clicks</span>
-            <span className={`text-xl font-bold font-mono ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>{affiliateStats.clicksCount}</span>
-          </div>
-
-          <div className={`p-3.5 rounded-xl border ${
-            isDarkMode ? 'bg-[#141422] border-[#222236]' : 'bg-white border-purple-200 shadow-xs'
-          }`}>
-            <span className={`text-xs block mb-1 ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>Referred Customer Orders</span>
-            <span className={`text-xl font-bold font-mono ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>{affiliateStats.ordersCount}</span>
-          </div>
-
-          <div className={`p-3.5 rounded-xl border ${
-            isDarkMode ? 'bg-[#141422] border-[#222236]' : 'bg-white border-purple-200 shadow-xs'
-          }`}>
-            <span className={`text-xs block mb-1 ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>Referred Product Revenue</span>
-            <span className={`text-xl font-bold font-mono ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>${affiliateStats.referredRevenueUSD.toFixed(2)}</span>
-          </div>
         </div>
       </div>
 

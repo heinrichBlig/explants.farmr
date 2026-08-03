@@ -18,7 +18,6 @@ import {
   Zap
 } from 'lucide-react';
 import { Culture, InventoryItem, ContaminationEvent, MediaRecipe } from '../types';
-import { recordPctAffiliateClick } from '../services/storage';
 
 interface DashboardViewProps {
   cultures: Culture[];
@@ -74,40 +73,39 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
 
   return (
     <div className="space-y-6 pb-12">
-      {/* Top Banner - PCT Partner Highlight */}
+      {/* Top Banner - Tissue Culture Management */}
       <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-[#1e1338] via-[#28174d] to-[#140f28] border border-[#7b2cbf]/40 p-6 shadow-xl shadow-[#7b2cbf]/10">
         <div className="absolute -right-12 -bottom-12 w-64 h-64 bg-[#7b2cbf]/20 rounded-full blur-3xl pointer-events-none" />
         <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 relative z-10">
           <div className="space-y-1.5 max-w-2xl">
             <div className="flex items-center gap-2">
               <span className="bg-[#7b2cbf] text-white text-[10px] font-bold px-2.5 py-0.5 rounded-full font-mono tracking-wider">
-                POWERED BY PLANT CELL TECHNOLOGY
+                TISSUE CULTURE MANAGEMENT SYSTEM
               </span>
               <span className="text-slate-300 text-xs flex items-center gap-1 font-medium">
-                <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" /> Official Reagent Partner
+                <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" /> Precision Micropropagation
               </span>
             </div>
             <h2 className="text-xl md:text-2xl font-extrabold text-white tracking-tight">
-              Optimize Proliferation & Suppress Contamination with PPM™
+              Optimize Proliferation & Suppress Contamination
             </h2>
             <p className="text-xs text-slate-300 leading-relaxed">
-              Integrated with PCT's broad-spectrum biocide (PPM™), tissue culture media, PGR formulations, and BioTilt™ bioreactors. Reduce lab loss by up to 85%.
+              Track active culture stages, subculture schedules, custom media recipes, and inventory reagents in real time.
             </p>
           </div>
           <div className="flex flex-wrap items-center gap-2.5 shrink-0">
             <button
-              onClick={() => recordPctAffiliateClick('Dashboard Primary PPM Promo')}
+              onClick={() => onNavigateTab('inventory')}
               className="bg-[#7b2cbf] hover:bg-[#9d4edd] text-white text-xs font-bold px-4 py-2.5 rounded-xl transition-all shadow-lg shadow-[#7b2cbf]/30 flex items-center gap-1.5 active:scale-95"
             >
-              <Sparkles className="w-4 h-4" />
-              <span>Order PPM™ Reagents</span>
-              <ExternalLink className="w-3.5 h-3.5 ml-0.5" />
+              <Package className="w-4 h-4" />
+              <span>Manage Inventory</span>
             </button>
             <button
               onClick={() => onNavigateTab('knowledge')}
               className="bg-purple-950/60 hover:bg-purple-900/80 border border-purple-400/30 text-white text-xs font-semibold px-3.5 py-2.5 rounded-xl transition-all flex items-center gap-1.5"
             >
-              <span>Explore PCT Masterclasses</span>
+              <span>Explore Protocols</span>
               <ChevronRight className="w-4 h-4 text-purple-200" />
             </button>
           </div>
@@ -205,10 +203,10 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
               {lowStockItems.length}
             </span>
             <button
-              onClick={(e) => { e.stopPropagation(); recordPctAffiliateClick('Low Stock Card 1 Click'); }}
+              onClick={() => onNavigateTab('inventory')}
               className="text-[10px] bg-purple-100 dark:bg-[#7b2cbf]/30 hover:bg-purple-200 dark:hover:bg-[#7b2cbf]/60 text-purple-900 dark:text-[#c77dff] px-2 py-0.5 rounded font-bold border border-purple-300 dark:border-[#7b2cbf]/40 flex items-center gap-1"
             >
-              1-Click Restock
+              View Inventory
             </button>
           </div>
           <div className={`mt-2 text-[10px] ${textMuted} flex items-center justify-between`}>
@@ -352,7 +350,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
               </button>
 
               <button
-                onClick={() => recordPctAffiliateClick('Quick Order PPM Button')}
+                onClick={() => onNavigateTab('inventory')}
                 className={`p-3 rounded-xl border transition-all flex flex-col items-center justify-center gap-2 group text-center ${
                   isDarkMode 
                     ? 'bg-[#181826] hover:bg-[#202034] border-[#2c2c42] hover:border-[#7b2cbf]' 
@@ -362,7 +360,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                 <div className="w-9 h-9 rounded-lg bg-emerald-100 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 flex items-center justify-center group-hover:scale-110 transition-transform">
                   <Package className="w-5 h-5" />
                 </div>
-                <span className={`text-xs font-medium ${textPrimary}`}>Order PPM Reagents</span>
+                <span className={`text-xs font-medium ${textPrimary}`}>Reagent Inventory</span>
               </button>
             </div>
           </div>
@@ -378,10 +376,10 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                 Reagent Stock Alerts ({lowStockItems.length})
               </span>
               <button
-                onClick={() => recordPctAffiliateClick('Low Stock Banner All Restock')}
+                onClick={() => onNavigateTab('inventory')}
                 className="text-[10px] text-purple-700 dark:text-[#c77dff] hover:underline font-bold"
               >
-                Order from PCT
+                Open Manager
               </button>
             </div>
 
@@ -401,10 +399,10 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                       </div>
                     </div>
                     <button
-                      onClick={() => recordPctAffiliateClick(`Restock ${item.name}`, item.pctBuyUrl)}
+                      onClick={() => onNavigateTab('inventory')}
                       className="text-[10px] bg-[#7b2cbf] hover:bg-[#9d4edd] text-white px-2 py-1 rounded-lg font-semibold transition-colors shrink-0"
                     >
-                      Buy
+                      Restock
                     </button>
                   </div>
                 ))}

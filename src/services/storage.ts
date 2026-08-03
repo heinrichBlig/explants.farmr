@@ -20,16 +20,8 @@ const STORAGE_KEYS = {
   RECIPES: 'tf_recipes_v1',
   INVENTORY: 'tf_inventory_v1',
   CONTAMINATION: 'tf_contamination_v1',
-  AFFILIATE_STATS: 'tf_affiliate_stats_v1',
   THEME: 'tf_theme_v1'
 };
-
-export interface AffiliateStats {
-  clicksCount: number;
-  ordersCount: number;
-  referredRevenueUSD: number;
-  commissionEarnedUSD: number;
-}
 
 // Helper to safely load JSON from localStorage
 function getItem<T>(key: string, fallback: T): T {
@@ -72,14 +64,6 @@ export function initializeStorage(): void {
   if (!localStorage.getItem(STORAGE_KEYS.CONTAMINATION)) {
     setItem(STORAGE_KEYS.CONTAMINATION, INITIAL_CONTAMINATION_LOGS);
   }
-  if (!localStorage.getItem(STORAGE_KEYS.AFFILIATE_STATS)) {
-    setItem(STORAGE_KEYS.AFFILIATE_STATS, {
-      clicksCount: 42,
-      ordersCount: 8,
-      referredRevenueUSD: 840.00,
-      commissionEarnedUSD: 126.00 // 15% commission
-    });
-  }
 }
 
 // Reset data to initial demo state
@@ -90,12 +74,6 @@ export function resetStorageToDemoData(): void {
   localStorage.setItem(STORAGE_KEYS.RECIPES, JSON.stringify(INITIAL_RECIPES));
   localStorage.setItem(STORAGE_KEYS.INVENTORY, JSON.stringify(INITIAL_INVENTORY));
   localStorage.setItem(STORAGE_KEYS.CONTAMINATION, JSON.stringify(INITIAL_CONTAMINATION_LOGS));
-  localStorage.setItem(STORAGE_KEYS.AFFILIATE_STATS, JSON.stringify({
-    clicksCount: 42,
-    ordersCount: 8,
-    referredRevenueUSD: 840.00,
-    commissionEarnedUSD: 126.00
-  }));
   window.dispatchEvent(new Event('storage_updated'));
 }
 
@@ -107,7 +85,6 @@ export function clearAllStorage(): void {
   localStorage.removeItem(STORAGE_KEYS.RECIPES);
   localStorage.removeItem(STORAGE_KEYS.INVENTORY);
   localStorage.removeItem(STORAGE_KEYS.CONTAMINATION);
-  localStorage.removeItem(STORAGE_KEYS.AFFILIATE_STATS);
   window.dispatchEvent(new Event('storage_updated'));
 }
 
@@ -202,7 +179,7 @@ export function performSubcultureAction(cultureId: string, options?: {
 export function getRecipes(labId?: string): MediaRecipe[] {
   const recipes = getItem<MediaRecipe[]>(STORAGE_KEYS.RECIPES, INITIAL_RECIPES);
   if (labId && labId !== 'all') {
-    return recipes.filter(r => r.labId === labId || r.pctRecommended);
+    return recipes.filter(r => r.labId === labId);
   }
   return recipes;
 }
@@ -289,26 +266,6 @@ export function saveContaminationLog(event: ContaminationEvent): void {
       setItem(STORAGE_KEYS.CULTURES, cultures);
     }
   }
-}
-
-// --- AFFILIATE TRACKER ---
-export function getAffiliateStats(): AffiliateStats {
-  return getItem<AffiliateStats>(STORAGE_KEYS.AFFILIATE_STATS, {
-    clicksCount: 42,
-    ordersCount: 8,
-    referredRevenueUSD: 840.00,
-    commissionEarnedUSD: 126.00
-  });
-}
-
-export function recordPctAffiliateClick(productName?: string, buyUrl?: string): void {
-  const stats = getAffiliateStats();
-  stats.clicksCount += 1;
-  setItem(STORAGE_KEYS.AFFILIATE_STATS, stats);
-  
-  // Open PCT affiliate link in new tab or track
-  const finalUrl = buyUrl || 'https://plantcelltechnology.com/?utm_source=tissue.farmr&utm_medium=affiliate';
-  window.open(finalUrl, '_blank', 'noopener,noreferrer');
 }
 
 // --- CSV / JSON EXPORT & IMPORT ---

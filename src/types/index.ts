@@ -60,9 +60,6 @@ export interface MediaRecipe {
   pgrs: PGRConcentration[];
   targetSpecies?: string;
   difficulty: 'Beginner' | 'Intermediate' | 'Advanced' | 'Commercial';
-  pctRecommended: boolean;
-  pctProductCode?: string;
-  pctBuyUrl?: string;
   notes?: string;
   author: string;
   isFavorite?: boolean;
@@ -88,9 +85,6 @@ export interface InventoryItem {
   minThreshold: number;
   costEstimateUSD: number;
   location: string;
-  pctProductCode?: string;
-  pctBuyUrl: string;
-  isPctProduct: boolean;
   lastRestocked: string;
 }
 
@@ -136,13 +130,12 @@ export interface KnowledgeArticle {
   summary: string;
   content: string;
   videoUrl?: string;
-  pctProductTags: string[];
-  pctArticleUrl: string;
+  reagentTags?: string[];
   author: string;
 }
 
 export interface PricingTier {
-  id: 'free' | 'starter' | 'pro' | 'enterprise' | 'pct_partner';
+  id: 'free' | 'starter' | 'pro' | 'enterprise';
   name: string;
   priceMonthly: string;
   cultureLimit: string;

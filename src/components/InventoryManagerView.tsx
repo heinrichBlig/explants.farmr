@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { 
   Package, 
   Plus, 
-  ExternalLink, 
   ShieldCheck, 
   AlertTriangle, 
   CheckCircle2, 
@@ -12,7 +11,7 @@ import {
   ShoppingCart
 } from 'lucide-react';
 import { InventoryItem, InventoryCategory } from '../types';
-import { saveInventoryItem, deleteInventoryItem, restockInventoryItem, recordPctAffiliateClick } from '../services/storage';
+import { saveInventoryItem, deleteInventoryItem, restockInventoryItem } from '../services/storage';
 
 interface InventoryManagerViewProps {
   inventory: InventoryItem[];
@@ -39,7 +38,6 @@ export const InventoryManagerView: React.FC<InventoryManagerViewProps> = ({
   const [minThreshold, setMinThreshold] = useState(5);
   const [costEstimateUSD, setCostEstimateUSD] = useState(25);
   const [location, setLocation] = useState('Storage Shelf A');
-  const [pctBuyUrl, setPctBuyUrl] = useState('https://plantcelltechnology.com/');
 
   const filteredItems = inventory.filter((item) => {
     const matchesCat = categoryFilter === 'All' || item.category === categoryFilter;
@@ -61,8 +59,6 @@ export const InventoryManagerView: React.FC<InventoryManagerViewProps> = ({
       minThreshold: Number(minThreshold),
       costEstimateUSD: Number(costEstimateUSD),
       location,
-      pctBuyUrl: pctBuyUrl || 'https://plantcelltechnology.com/',
-      isPctProduct: pctBuyUrl.includes('plantcelltechnology'),
       lastRestocked: new Date().toISOString().split('T')[0]
     };
     saveInventoryItem(item);
@@ -94,7 +90,7 @@ export const InventoryManagerView: React.FC<InventoryManagerViewProps> = ({
             Lab Reagent & Supplies Inventory
           </h2>
           <p className={`text-xs ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}`}>
-            Monitor stock levels for PPM™ biocide, media salts, PGRs, gelling agents, and vessels with 1-click PCT restock links.
+            Monitor stock levels for biocide, media salts, PGRs, gelling agents, and vessels with quick restock tools.
           </p>
         </div>
 
@@ -118,17 +114,9 @@ export const InventoryManagerView: React.FC<InventoryManagerViewProps> = ({
             </div>
             <div>
               <h4 className={`text-xs font-bold ${isDarkMode ? 'text-amber-300' : 'text-amber-900'}`}>{lowStockCount} Reagents Running Below Threshold!</h4>
-              <p className={`text-[11px] ${isDarkMode ? 'text-slate-300' : 'text-amber-800'}`}>Order directly from Plant Cell Technology to prevent culture subculture delays.</p>
+              <p className={`text-[11px] ${isDarkMode ? 'text-slate-300' : 'text-amber-800'}`}>Restock lab inventory to prevent culture subculture delays.</p>
             </div>
           </div>
-
-          <button
-            onClick={() => recordPctAffiliateClick('Low Stock Restock All Banner')}
-            className="bg-[#7b2cbf] hover:bg-[#9d4edd] text-white text-xs font-bold px-3.5 py-2 rounded-xl flex items-center gap-1 shadow-md shadow-[#7b2cbf]/20 shrink-0"
-          >
-            <ShoppingCart className="w-3.5 h-3.5" />
-            <span>Order All Low Stock from PCT</span>
-          </button>
         </div>
       )}
 
@@ -194,11 +182,7 @@ export const InventoryManagerView: React.FC<InventoryManagerViewProps> = ({
                     <h3 className={`font-bold text-base leading-snug ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>{item.name}</h3>
                   </div>
 
-                  {item.isPctProduct && (
-                    <span className="bg-[#7b2cbf]/10 text-[#7b2cbf] dark:bg-[#7b2cbf]/30 dark:text-[#c77dff] border border-[#7b2cbf]/40 text-[9px] font-bold px-1.5 py-0.5 rounded font-mono shrink-0">
-                      PCT Official
-                    </span>
-                  )}
+
                 </div>
 
                 <div className="flex items-baseline justify-between">
@@ -248,11 +232,11 @@ export const InventoryManagerView: React.FC<InventoryManagerViewProps> = ({
                 </div>
 
                 <button
-                  onClick={() => recordPctAffiliateClick(item.name, item.pctBuyUrl)}
+                  onClick={() => handleQuickRestock(item.id, item.minThreshold * 2)}
                   className="bg-[#7b2cbf] hover:bg-[#9d4edd] text-white text-xs font-bold py-1.5 px-3 rounded-xl transition-all flex items-center gap-1 shadow-md shadow-[#7b2cbf]/20"
                 >
-                  <span>Order from PCT</span>
-                  <ExternalLink className="w-3 h-3" />
+                  <RefreshCw className="w-3 h-3" />
+                  <span>Restock Item</span>
                 </button>
               </div>
             </div>

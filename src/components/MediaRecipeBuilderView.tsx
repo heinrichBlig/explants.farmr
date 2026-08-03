@@ -5,7 +5,6 @@ import {
   Plus, 
   Trash2, 
   Sparkles, 
-  ExternalLink, 
   Save, 
   CheckCircle2, 
   ShieldCheck, 
@@ -15,7 +14,7 @@ import {
   FlaskConical
 } from 'lucide-react';
 import { MediaRecipe, PGRConcentration } from '../types';
-import { saveRecipe, recordPctAffiliateClick } from '../services/storage';
+import { saveRecipe } from '../services/storage';
 
 interface MediaRecipeBuilderViewProps {
   activeLabId: string;
@@ -98,9 +97,6 @@ export const MediaRecipeBuilderView: React.FC<MediaRecipeBuilderViewProps> = ({
       pgrs,
       targetSpecies,
       difficulty,
-      pctRecommended: ppmVolumeMlPerL > 0,
-      pctProductCode: 'PCT-CUSTOM-REC',
-      pctBuyUrl: 'https://plantcelltechnology.com/products/ppm-plant-preservative-mixture',
       notes,
       author: 'tissue.farmr User'
     };
@@ -123,7 +119,7 @@ export const MediaRecipeBuilderView: React.FC<MediaRecipeBuilderViewProps> = ({
             Media Recipe Builder & Batch Calculator
           </h2>
           <p className={`text-xs ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}`}>
-            Design tissue culture formulations, adjust PGR ratios, and auto-scale batch preparations with PCT reagent specs.
+            Design tissue culture formulations, adjust PGR ratios, and auto-scale batch preparations.
           </p>
         </div>
 
@@ -426,7 +422,7 @@ export const MediaRecipeBuilderView: React.FC<MediaRecipeBuilderViewProps> = ({
           </form>
         </div>
 
-        {/* Right Col: Batch Volume Calculator & PCT Affiliate Reagents */}
+        {/* Right Col: Batch Volume Calculator */}
         <div className="space-y-6">
           {/* Batch Calculator Box */}
           <div className={`p-5 rounded-2xl border space-y-4 ${
@@ -511,63 +507,6 @@ export const MediaRecipeBuilderView: React.FC<MediaRecipeBuilderViewProps> = ({
                   <span>{(p.concentrationMgL * batchVolumeL).toFixed(2)} mg</span>
                 </div>
               ))}
-            </div>
-          </div>
-
-          {/* Plant Cell Technology Reagents Card */}
-          <div className={`p-5 rounded-2xl border space-y-3 ${
-            isDarkMode 
-              ? 'bg-gradient-to-br from-[#181828] to-[#12121d] border-[#382256]' 
-              : 'bg-purple-50/50 border-purple-200'
-          }`}>
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-1.5">
-                <ShieldCheck className="w-4 h-4 text-[#7b2cbf] dark:text-[#c77dff]" />
-                <span className={`text-xs font-bold ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>Buy Formula Reagents from PCT</span>
-              </div>
-              <span className="text-[10px] bg-[#7b2cbf]/20 text-[#7b2cbf] dark:text-[#c77dff] px-2 py-0.5 rounded font-mono font-bold">
-                AFFILIATE LINK
-              </span>
-            </div>
-
-            <p className={`text-xs leading-relaxed ${isDarkMode ? 'text-slate-300' : 'text-slate-600'}`}>
-              Plant Cell Technology provides pre-sterilized MS & WPM media packs, lab grade PPM™, certified PGR stock, and BioTilt™ bioreactor systems.
-            </p>
-
-            <div className="space-y-2 pt-1">
-              <button
-                onClick={() => recordPctAffiliateClick('PCT PPM 100ml Order')}
-                className={`w-full p-2.5 rounded-xl text-xs flex items-center justify-between transition-colors border group ${
-                  isDarkMode 
-                    ? 'bg-[#1e1e30] hover:bg-[#282840] border-[#343452]' 
-                    : 'bg-white hover:bg-slate-100 border-slate-300'
-                }`}
-              >
-                <div className="text-left">
-                  <div className={`font-semibold group-hover:text-[#7b2cbf] ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>PPM™ Biocide 100ml</div>
-                  <div className={`text-[10px] ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>Broad-spectrum preservative</div>
-                </div>
-                <span className="text-xs font-bold text-[#7b2cbf] dark:text-[#c77dff] flex items-center gap-1">
-                  $34.99 <ExternalLink className="w-3 h-3" />
-                </span>
-              </button>
-
-              <button
-                onClick={() => recordPctAffiliateClick('PCT MS Salts Pack Order')}
-                className={`w-full p-2.5 rounded-xl text-xs flex items-center justify-between transition-colors border group ${
-                  isDarkMode 
-                    ? 'bg-[#1e1e30] hover:bg-[#282840] border-[#343452]' 
-                    : 'bg-white hover:bg-slate-100 border-slate-300'
-                }`}
-              >
-                <div className="text-left">
-                  <div className={`font-semibold group-hover:text-[#7b2cbf] ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>MS Salts with Vitamins (50L)</div>
-                  <div className={`text-[10px] ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>High purity TC grade</div>
-                </div>
-                <span className="text-xs font-bold text-[#7b2cbf] dark:text-[#c77dff] flex items-center gap-1">
-                  $28.50 <ExternalLink className="w-3 h-3" />
-                </span>
-              </button>
             </div>
           </div>
         </div>
